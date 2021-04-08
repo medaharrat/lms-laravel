@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Subject;
 
 class TeachersController extends Controller
 {
@@ -13,6 +14,7 @@ class TeachersController extends Controller
      */
     public function index()
     {
-        return view('pages.teacher.index');
+        $subjects = Subject::orderBy('name', 'asc')->get();
+        return view('pages.teacher.index')->with('subjects', $subjects);
     }
 }

@@ -34,7 +34,14 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'taskName'    => 'required',
+            'taskDescription'    => 'required'
+        ]);
+
+        // Add subject
+
+        return redirect('/tasks')->with('success', 'Task Created Successfully!');
     }
 
     /**
@@ -68,7 +75,7 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return redirect(`/tasks/$id`)->with('success', 'Task Updated Successfully!');
     }
 
     /**
@@ -79,6 +86,6 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return redirect(`/tasks`)->with('success', 'Task Deleted Successfully!');
     }
 }

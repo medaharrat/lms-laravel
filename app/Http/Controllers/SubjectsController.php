@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Subject; 
 
 class SubjectsController extends Controller
 {
@@ -13,7 +14,8 @@ class SubjectsController extends Controller
      */
     public function index()
     {
-        return view('pages.teacher.index');
+        $subjects = Subject::orderBy('name', 'asc')->get();
+        return view('pages.teacher.index')->with('subjects', $subjects);
     }
 
     /**
@@ -34,7 +36,22 @@ class SubjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Form Validation
+        $this->validate($request, [
+            'code'    => 'required',
+            'name'    => 'required',
+            'credits' => 'required',
+        ]);
+
+        // Add subject
+        $subject = new Subject;
+        $subject->code = $request->input('code');
+        $subject->name = $request->input('name');
+        $subject->description = $request->input('description');
+        $subject->credits = $request->input('credits');
+        $subject->save();
+
+        return redirect('/subjects')->with('success', 'Subject Created Successfully!');
     }
 
     /**
@@ -45,7 +62,7 @@ class SubjectsController extends Controller
      */
     public function show($id)
     {
-        return view('pages.teacher.subjects.show');
+        return view('pages.teacher.subjects.show')->with('subject', Subject::find($id));
     }
 
     /**
@@ -68,7 +85,7 @@ class SubjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return redirect(`/subjects/$id`)->with('success', 'Subject Updated Successfully!');
     }
 
     /**
@@ -79,6 +96,8 @@ class SubjectsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $subject = Subject::find($id);
+        $subject->delete();
+        return redirect(`/subjects`)->with('success', 'Subject Deleted Successfully!');
     }
 }

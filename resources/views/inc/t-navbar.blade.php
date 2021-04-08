@@ -10,7 +10,7 @@
                     <a class="nav-link active" aria-current="page" href="/subjects">My Subjects</a>
                 </li>
             </ul>
-            <a href="/subjects/new">
+            <a href="/subjects/create">
                 <button class="btn btn-outline-success" type="button">New Subject</button>
             </a>
         </div>

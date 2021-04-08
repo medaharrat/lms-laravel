@@ -1,9 +1,11 @@
 @extends('layouts.general')
 
 @section('content')
-    <div>
-        <p> On the main page of the application, a short static description is displayed.! </p>
-        <p> Make it possible to register to the app. During registration, ask for the username, email address, and password (twice). On the login page use the email address and password to authenticate. After a successful login, show the main page. </p>
-        <p> During registration only students can be registered. </p>
+    <div class="appDescription">
+        <p class="font-weight-light">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="authBtnGroup">
+            <a href="/login" class="btn btn-primary" role="button">Login</a>
+            <a href="/register" class="btn btn-success" role="button">Register</a>
+        </div>
     </div>
 @endsection

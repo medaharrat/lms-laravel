@@ -14,6 +14,10 @@ class LmsSeeder extends Seeder
      */
     public function run()
     {
+        // Teachers CREATE A SEEDER FOR TEACHERS 
+
+
+        // Subjects 
         Subject::create([
             'code' => 'IK-INT001',
             'name' => 'Introduction to Data Science',

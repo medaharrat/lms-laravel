@@ -1,6 +1,10 @@
-@extends('layouts.general')
+@extends('layouts.app')
 
 @section('content')
     <h1>Contact</h1>
-    <h6>The contact page contains the name of the author, Neptun code, and email address (static).</h6>
+    <ul>
+        <li>Aharrat Mohamed</li>
+        <li>AHR9OI</li>
+        <li>mohamedaharrat1@gmail.com</li>
+    </ul>
 @endsection

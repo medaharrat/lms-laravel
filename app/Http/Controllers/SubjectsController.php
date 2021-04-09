@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Subject; 
+use App\Models\User; 
+use App\Models\Task; 
 
 class SubjectsController extends Controller
 {
@@ -15,6 +17,7 @@ class SubjectsController extends Controller
     public function index()
     {
         $subjects = Subject::orderBy('name', 'asc')->get();
+        //echo $subjects;
         return view('pages.teacher.index')->with('subjects', $subjects);
     }
 
@@ -38,14 +41,13 @@ class SubjectsController extends Controller
     {
         // Form Validation
         $this->validate($request, [
-            'code'    => 'required',
             'name'    => 'required',
             'credits' => 'required',
         ]);
 
         // Add subject
         $subject = new Subject;
-        $subject->code = $request->input('code');
+        $subject->id = $request->input('code');
         $subject->name = $request->input('name');
         $subject->description = $request->input('description');
         $subject->credits = $request->input('credits');
@@ -62,7 +64,12 @@ class SubjectsController extends Controller
      */
     public function show($id)
     {
-        return view('pages.teacher.subjects.show')->with('subject', Subject::find($id));
+        $subject = Subject::find($id);
+        $students = User::all();
+        $tasks = Task::all();
+        return view('pages.teacher.subjects.show', [
+            'subject' => $subject, 'students' => $students, 'tasks' => $tasks
+        ]);
     }
 
     /**
@@ -73,7 +80,8 @@ class SubjectsController extends Controller
      */
     public function edit($id)
     {
-        return view('pages.teacher.subjects.edit');
+        $subject = Subject::find($id);
+        return view('pages.teacher.subjects.edit')->with('subject', $subject);
     }
 
     /**
@@ -85,7 +93,13 @@ class SubjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return redirect(`/subjects/$id`)->with('success', 'Subject Updated Successfully!');
+        $subject = Subject::find($id);
+        $subject->name = $request->name;
+        $subject->description = $request->description;
+        $subject->credits = $request->credits;
+        $subject->save();
+
+        return redirect('/subjects')->with('success', 'Subject Updated Successfully!');
     }
 
     /**
@@ -98,6 +112,6 @@ class SubjectsController extends Controller
     {
         $subject = Subject::find($id);
         $subject->delete();
-        return redirect(`/subjects`)->with('success', 'Subject Deleted Successfully!');
+        return redirect('/subjects')->with('success', 'Subject Deleted Successfully!');
     }
 }

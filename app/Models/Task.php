@@ -21,10 +21,10 @@ class Task extends Model
     ];
 
     public function subject() {
-        return $this->belongsTo('App\Subject');
+        return $this->belongsTo(Subject::class);
     }
 
     public function solution() {
-        return $this->hasMany('App\Solution');
+        return $this->hasMany(Solution::class);
     }
 }

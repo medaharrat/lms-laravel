@@ -9,31 +9,30 @@ class Subject extends Model
 {
     use HasFactory;
     
-    /**
-     * The primary key associated with the table.
-     *
-     * @var string
-     */
-    protected $primaryKey = 'code';
-
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'code',
+        'id',
         'name',
         'description',
         'credits',
     ];
 
     public function task(){
-        return $this->hasMany('App\Task');
+        return $this->hasMany(Task::class);
     }
 
-    /*public function user(){
-        return $this->belongsToMany(User::class)->addWhereConstraints('is_teacher', '=', 1);
-        return $this->belongsTo(User::class)->addWhereConstraints('is_teacher', '=', 0);
-    }*/
+    public function teacher() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function students() {
+        return $this->belongsToMany(User::class);
+    }
 }

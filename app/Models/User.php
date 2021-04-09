@@ -36,7 +36,7 @@ class User extends Authenticatable
 
     public function subject()
     {
-        return $this->hasMany(Subject::class);
+        return $this->is_teacher ? $this->hasMany(Subject::class) : $this->belongsToMany(Subject::class);
     }
 
 }

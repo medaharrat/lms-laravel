@@ -1,14 +1,55 @@
-.appDescription {
+.main {
+    height: 92vh; /* Find a better solution */
+}
+.appbg-light {
+    background-color: #ffffff;
+}
+.appbg-dark {
+    background-color: #2d3e4e;
+}
+.appcard {
     max-width: 700px;
     margin: 50px auto;
-    padding: 30px;
+    /*padding: 30px;*/
     text-align: justify;
     font-family: 'Nunito', sans-serif;
-    color: rgb(51, 51, 51);
-    background-color: rgb(247, 247, 247);
     border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    /*box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px; shadow no border */
 }
-.authBtnGroup {
+.appcard-header {
+    width: 100%;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #414141;
+    color: rgb(255, 255, 255);
+    padding: 15px;
+    font-weight: bold;
+}
+.appcard-body {
+    padding: 20px;
+}
+.appcard-dark {
+    color: rgb(255, 255, 255);
+    background-color: #34465a;
+}
+.appcard-light {
+    color: rgb(26, 26, 26);
+    background-color: #ffffff;
+}
+.appbtn-primary {
+    background-color: #414141;
+    border: none;
+    color:rgb(255, 255, 255);
+    font-weight: bold;
+}
+.appbtn-primary:hover{
+    color:rgb(228, 228, 228);
+}
+.max-w-7 {
+    max-width: 70%;
+}
+.auth-btn-group {
     text-align: right;
     float: right;
 }

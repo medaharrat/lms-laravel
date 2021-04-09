@@ -1,5 +1,18 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
 .main {
     height: 92vh; /* Find a better solution */
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+ul {
+    list-style: none;
+}
+a:hover {
+    color: inherit;
 }
 .appbg-light {
     background-color: #ffffff;
@@ -12,7 +25,6 @@
     margin: 50px auto;
     /*padding: 30px;*/
     text-align: justify;
-    font-family: 'Nunito', sans-serif;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
     /*box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px; shadow no border */
@@ -43,9 +55,66 @@
     color:rgb(255, 255, 255);
     font-weight: bold;
 }
+.appbtn-danger {
+    background-color: #ff2e2e;
+    border: none;
+    color:rgb(255, 255, 255);
+    font-weight: bold;
+}
 .appbtn-primary:hover{
+    color:rgb(228, 228, 228);
+}
+.appbtn-danger:hover{
     color:rgb(228, 228, 228);
 }
 .max-w-7 {
     max-width: 70%;
+}
+.fieldset {
+    border: 1px solid rgb(226, 226, 226);
+    border-radius: 5px;
+    padding: 10px;
+}
+.description {
+    background-color: rgb(236, 236, 236);
+    color: rgb(48, 48, 48);
+    border-radius: 5px;
+    padding: 20px;
+    margin: 20px;
+    text-align: justify;
+}
+.action-buttons {
+    margin: 20px;
+    text-align: right;
+}
+/*  Typography */
+.typography {
+    margin: 20px;
+    text-align: left;
+}
+.bold {
+    font-weight: bold;
+}
+/* badges */
+.appbadge {
+    background-color: #f5f5f5;
+    color: rgb(26, 26, 26);
+    font-size: 13px;
+    padding: 5px;
+    border-radius: 5px;
+}
+.appbadge:hover{
+    color:rgb(228, 228, 228);
+}
+.appbadge-primary {
+    background-color: #414141;
+    color:rgb(255, 255, 255);
+}
+.appbadge-secondary {
+    background-color: #25a8ff;
+    color:rgb(255, 255, 255);
+}
+.appbadge-danger {
+    background-color: #ff2e2e;
+    color:rgb(255, 255, 255);
 }

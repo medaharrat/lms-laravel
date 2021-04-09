@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Subject;
+use App\Models\Task;
+use App\Models\Solution;
 use Illuminate\Database\Seeder;
 
 class LmsSeeder extends Seeder
@@ -37,6 +39,28 @@ class LmsSeeder extends Seeder
             'name' => 'Advanced Machine Learning',
             'description' => 'This course is a part of the third semester of the computer science master program data science specialization.',
             'credits' => '5',
+        ]);
+
+        // Tasks 
+        Task::create([
+            'name' => 'Server Side Assignment',
+            'description' => 'This is a task.',
+            'subject_id' => 'IK-INT001',
+            'points' => '60'
+        ]);
+
+        Task::create([
+            'name' => 'Front Side Assignment',
+            'description' => 'This is a task.',
+            'subject_id' => 'IK-MAC01',
+            'points' => '60',
+        ]);
+
+        Task::create([
+            'name' => 'Homework 1',
+            'description' => 'This is a task.',
+            'subject_id' => 'IK-ADV01',
+            'points' => '10',
         ]);
     }
 }

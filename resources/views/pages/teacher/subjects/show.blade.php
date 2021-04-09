@@ -6,6 +6,9 @@
             <li><h6>Name: {{ $subject->name }}</h6></li>
             <li><p>Description: {{ $subject->description }}</p></li>
             <li><p>Credits: {{ $subject->credits }}</p></li>
+            <li><p>Date of creation: {{ $subject->created_at }}</p></li>
+            <li><p>Date of last modification: {{ $subject->updated_at }}</p></li>
+            <li><p>Number of students enrolled: 20 (static)</p></li>
         </ul>
     </div>
     <div class="">
@@ -27,7 +30,7 @@
             <tbody>
               @foreach ($students as $student)
               <tr>
-                <th scope="row">{{ $student->name }}</th>
+                <td>{{ $student->name }}</td>
                 <td>{{ $student->email }}</td>
               </tr>
               @endforeach
@@ -36,6 +39,9 @@
     </div>
     <div class="">
         <h6>Tasks of the subject:</h6>
+        <a href="/tasks/create" role="button" class="btn btn-primary">
+          New Task
+        </a>
         <table class="table">
             <thead>
               <tr>
@@ -46,7 +52,7 @@
             <tbody>
               @foreach ($tasks as $task)
               <tr>
-                <th scope="row">{{ $task->name }}</th>
+                <td scope="row"><a href="/tasks/{{$task->id}}">{{ $task->name }}</a></td>  
                 <td>{{ $task->points }}</td>
               </tr>
               @endforeach

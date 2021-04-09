@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Task;
 
 class TasksController extends Controller
 {
@@ -52,7 +53,8 @@ class TasksController extends Controller
      */
     public function show($id)
     {
-        return view('pages.tasks.subjects.show');
+        $task = Task::find($id);
+        return view('pages.teacher.tasks.show')->with('task', $task);
     }
 
     /**
@@ -63,7 +65,8 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        return view('pages.tasks.subjects.edit');
+        $task = Task::find($id);
+        return view('pages.teacher.tasks.edit')->with('task', $task);
     }
 
     /**
@@ -75,7 +78,13 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        return redirect(`/tasks/$id`)->with('success', 'Task Updated Successfully!');
+        $task = Task::find($id);
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->points = $request->points;
+        $task->save();
+        
+        return redirect('/subjects/'.$task->subject_id)->with('success', 'Task Updated Successfully!');
     }
 
     /**
@@ -86,6 +95,8 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        return redirect(`/tasks`)->with('success', 'Task Deleted Successfully!');
+        $task = Task::find($id);
+        $task->delete();
+        return redirect('/subjects/'.$task->subject_id)->with('success', 'Task Deleted Successfully!');
     }
 }

@@ -17,7 +17,6 @@ class SubjectsController extends Controller
     public function index()
     {
         $subjects = Subject::orderBy('name', 'asc')->get();
-        //echo $subjects;
         return view('pages.teacher.index')->with('subjects', $subjects);
     }
 
@@ -99,7 +98,7 @@ class SubjectsController extends Controller
         $subject->credits = $request->credits;
         $subject->save();
 
-        return redirect('/subjects')->with('success', 'Subject Updated Successfully!');
+        return redirect('/subjects/'.$subject->id)->with('success', 'Subject Updated Successfully!');
     }
 
     /**

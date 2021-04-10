@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/student">
-            Students
+        <a class="navbar-brand" href="/teacher">
+            Teacher
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -11,14 +11,14 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/subjects">My Tasks</a>
+                    <a class="nav-link active" aria-current="page" href="/teacher/{{ Auth::user()->id }}/subjects">My Subjects</a>
                 </li>
             </ul>
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="btn btn-outline-success" role="button" href="/subjects/create">Bling bling!</a>
+                    <a class="btn appbtn-outlined-light" role="button" href="/subjects/create">New Subject</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

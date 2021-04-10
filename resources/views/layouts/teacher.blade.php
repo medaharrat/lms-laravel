@@ -13,7 +13,7 @@
         <link href={{ asset('css/styles.css') }} rel="stylesheet">
     </head>
     <body class="antialiased">
-        @include('inc.t-navbar')
+        @include('inc.u-navbar')
         <div class="container py-4">
             @include('inc.alerts')
             @yield('content')

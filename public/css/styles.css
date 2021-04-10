@@ -55,6 +55,14 @@ a:hover {
     color:rgb(255, 255, 255);
     font-weight: bold;
 }
+.appbtn-outlined-light {
+    border: 1px solid rgb(210, 210, 210);
+    color:rgb(210, 210, 210);
+    font-weight: bold;
+}
+.appbtn-outlined-light:hover {
+    color:rgb(190, 190, 190);
+}
 .appbtn-danger {
     background-color: #ff2e2e;
     border: none;

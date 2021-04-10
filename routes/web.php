@@ -29,6 +29,7 @@ Auth::routes();
 Route::get('/teacher', [TeachersController::class, 'index']);
 /* Subjects */
 Route::resource('subjects', SubjectsController::class);
+Route::get('/teacher/{id}/subjects', [SubjectsController::class, 'index']);
 /* Tasks */
 Route::resource('tasks', TasksController::class);
 /* 

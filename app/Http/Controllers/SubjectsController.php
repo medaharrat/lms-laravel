@@ -14,9 +14,9 @@ class SubjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($teacher_id)
     {
-        $subjects = Subject::orderBy('name', 'asc')->get();
+        $subjects = Subject::orderBy('name', 'asc')->where('teacher_id', $teacher_id)->get();
         return view('pages.teacher.index')->with('subjects', $subjects);
     }
 
@@ -64,8 +64,8 @@ class SubjectsController extends Controller
     public function show($id)
     {
         $subject = Subject::find($id);
-        $students = User::all();
-        $tasks = Task::all();
+        $students = User::all(); //join with table student_subject and return the student of this subject
+        $tasks = Task::all(); //join with the table task and return the tasks of this subject
         return view('pages.teacher.subjects.show', [
             'subject' => $subject, 'students' => $students, 'tasks' => $tasks
         ]);

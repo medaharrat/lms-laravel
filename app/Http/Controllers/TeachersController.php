@@ -12,7 +12,7 @@ class TeachersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index() //FIX THIS | REDIRECT OR DO SOMETHING CREATIVE
     {
         $subjects = Subject::orderBy('name', 'asc')->get();
         return view('pages.teacher.index')->with('subjects', $subjects);

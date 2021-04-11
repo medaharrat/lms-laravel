@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Task;
+use App\Models\Solution;
+use Carbon\Carbon;
 
 class TasksController extends Controller
 {
@@ -24,7 +26,8 @@ class TasksController extends Controller
      */
     public function create()
     {
-        return view('pages.teacher.tasks.create');
+        $subject_id = 3;
+        return view('pages.teacher.tasks.create')->with('subject_id', $subject_id);
     }
 
     /**
@@ -37,10 +40,18 @@ class TasksController extends Controller
     {
         $this->validate($request, [
             'taskName'    => 'required',
-            'taskDescription'    => 'required'
+            'subjectId'    => 'required',
+            'taskDescription'    => 'required',
+            'taskPoints'    => 'required',
         ]);
 
-        // Add subject
+        // Add the task to the database
+        $task = new Task;
+        $task->name = $request->input('taskName');
+        $task->description = $request->input('taskDescription');
+        $task->points = $request->input('taskPoints');
+        $task->subject_id = $request->input('taskPoints');
+        $task->save();
 
         return redirect('/tasks')->with('success', 'Task Created Successfully!');
     }
@@ -54,7 +65,22 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = Task::find($id);
-        return view('pages.teacher.tasks.show')->with('task', $task);
+        $solutionsOfStudents = Solution::join('users', 'solutions.student_id', '=', 'users.id')
+            ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+            ->orderBy('solutions.created_at')
+            ->where('solutions.task_id', $id)->get();
+
+        $evaluatedSolutions = Solution::join('users', 'solutions.student_id', '=', 'users.id')
+            ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+            ->orderBy('solutions.created_at')
+            ->where([['task_id', '=', $id], ['evaluatedOn', '<>', '', 'and']])
+            ->get();
+
+        return view('pages.teacher.tasks.show', [
+            'task' => $task, 
+            'solutionsOfStudents' => $solutionsOfStudents,
+            'evaluatedSolutions' => $evaluatedSolutions
+        ]);
     }
 
     /**
@@ -79,12 +105,65 @@ class TasksController extends Controller
     public function update(Request $request, $id)
     {
         $task = Task::find($id);
+
         $task->name = $request->name;
         $task->description = $request->description;
         $task->points = $request->points;
         $task->save();
         
         return redirect('/subjects/'.$task->subject_id)->with('success', 'Task Updated Successfully!');
+    }
+
+    /**
+     * Show the form for evaluating the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function evaluation($solution_id)
+    {   
+        $solution = Solution::join('tasks', 'tasks.id', '=', 'solutions.task_id')
+            ->select(
+                'solutions.id', 'tasks.description', 'solutions.solution', 'tasks.points as taskPoints'
+            )
+            ->where('solutions.id', $solution_id)->first();
+
+        return view('pages.teacher.tasks.evaluate')->with('solution', $solution);
+    }
+
+    /**
+     * evaluated the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function evaluate(Request $request, $id)
+    {   
+        $solution = Solution::find($id);
+        $task = Task::find($solution->task_id);
+
+        $solution->evaluatedOn = Carbon::now()->toDateTimeString();
+        $solution->points = $request->evaluation;
+        $solution->save();
+
+        // find a better way not to repeat this
+        $solutionsOfStudents = Solution::join('users', 'solutions.student_id', '=', 'users.id')
+            ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+            ->orderBy('solutions.created_at')
+            ->where('solutions.task_id', $task->id)->get();
+
+        $evaluatedSolutions = Solution::join('users', 'solutions.student_id', '=', 'users.id')
+            ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+            ->orderBy('solutions.created_at')
+            ->where([['task_id', '=', $task->id], ['evaluatedOn', '<>', '', 'and']])
+            ->get();
+
+        return redirect('/tasks/'.$task->id)->with([
+            'task' => $task, 
+            'solutionsOfStudents' => $solutionsOfStudents,
+            'evaluatedSolutions' => $evaluatedSolutions
+        ]);
     }
 
     /**

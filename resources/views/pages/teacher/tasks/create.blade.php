@@ -17,6 +17,7 @@
             {{ Form::label('taskPoints', 'Task Points') }}
             {{ Form::number('taskPoints', '', ['class' => 'form-control']) }}
         </div>
+        {{ Form::hidden('subjectId', $subject_id) }}
         <div class="mt-3">
             <button class="btn appbtn-primary" type="submit">
                 Create

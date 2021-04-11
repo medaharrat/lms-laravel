@@ -126,3 +126,10 @@ a:hover {
     background-color: #ff2e2e;
     color:rgb(255, 255, 255);
 }
+
+.source-code {
+    background-color: rgb(236, 236, 236);
+    color: rgb(87, 87, 87);
+    border-radius: 5px;
+    margin: 20px;
+}

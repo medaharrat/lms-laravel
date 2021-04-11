@@ -24,15 +24,16 @@
   <ul class="row">
     <div class="col">
       <li><p><b>Points:</b> {{ $task->points }}</p></li>
-      <li><p><b>Date of creation:</b> {{ $task->created_at }}</p></li>
+      <li><p><b>Date of creation:</b> {{ $task->created_at->format('d-m-Y') }}</p></li>
     </div>
     <div class="col">
-      <li><p><b>Number of submitted solutions:</b> 20 (static)</p></li>
-      <li><p><b>Number of evaluated solutions:</b> 5 (static)</p></li>  
+      <li><p><b>Number of submitted solutions:</b> {{ count($solutionsOfStudents) }}</p></li>
+      <li><p><b>Number of evaluated solutions:</b> {{ count($evaluatedSolutions) }}</p></li>  
     </div>
   </ul>
 </div>
 <div class="">
+  @if(count($solutionsOfStudents) > 0)
     <h6 class="p-2 mt-3">Submitted solutions:</h6>
     <table class="table">
         <thead>
@@ -44,30 +45,33 @@
           </tr>
         </thead>
         <tbody>
+          @foreach ($solutionsOfStudents as $solution)
           <tr>
-            <td scope="row">Mohamed Aharrat</td>
-            <td>5th September 2021</td>
-            <td>med@gmail.com</td>
+            <td scope="row">{{ $solution->name }}</td>
+            <td>{{ $solution->created_at->format('d-m-Y') }}</td>
+            <td>{{ $solution->email }}</td>
             <td>
-                <a href="/submissions/{{ $task->id }}/evaluate" class="appbadge appbadge-secondary" role="button">
-                  Evaluate
-                </a>
+              @if (!strtotime($solution->evaluatedOn) > 0)
+              <a href="/tasks/{{ $solution->id }}/evaluate" class="appbadge appbadge-secondary" role="button">
+                Evaluate
+              </a>
+              @else
+              <div class="row">
+                <span class="col">
+                  <b>{{ $solution->points }}</b>pts
+                </span>
+                <span class="col">
+                  <i class="fa fa-info-circle" aria-hidden="true" title="Evaluted on {{ $solution->evaluatedOn }}"></i>
+                </span>
+              </div>
+              @endif
             </td>
-          </tr>
-          <tr>
-            <td scope="row">Karim Aharrat</td>
-            <td>6th September 2021</td>
-            <td>karim@gmail.com</td>
-            <td class="row">
-              <span class="col">
-                <b>0</b>pts
-              </span>
-              <span class="col">
-                <i class="fa fa-info-circle" aria-hidden="true" title="Evaluated on 15th September 2021"></i>
-              </span>
-            </td>
-          </tr>
+          </tr>      
+          @endforeach
         </tbody>
     </table>  
+    @else
+      <p class="m-3">There are no solutions for this task! </p>
+    @endif
 </div>
 @endsection

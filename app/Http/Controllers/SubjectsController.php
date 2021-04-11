@@ -65,7 +65,7 @@ class SubjectsController extends Controller
     {
         $subject = Subject::find($id);
         $students = User::all(); //join with table student_subject and return the student of this subject
-        $tasks = Task::all(); //join with the table task and return the tasks of this subject
+        $tasks = Task::orderBy('name', 'asc')->where('subject_id', $id)->get();
         return view('pages.teacher.subjects.show', [
             'subject' => $subject, 'students' => $students, 'tasks' => $tasks
         ]);

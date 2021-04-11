@@ -46,6 +46,24 @@ class LmsSeeder extends Seeder
             'password' => Hash::make('123456789'),
             'is_teacher' => '1',
         ]);
+        User::create([
+            'name' => 'Student_1',
+            'email' => 'student1@gmail.com',
+            'password' => Hash::make('123456789'),
+            'is_teacher' => '0',
+        ]);
+        User::create([
+            'name' => 'Student_2',
+            'email' => 'student2@gmail.com',
+            'password' => Hash::make('123456789'),
+            'is_teacher' => '0',
+        ]);
+        User::create([
+            'name' => 'Student_3',
+            'email' => 'student3@gmail.com',
+            'password' => Hash::make('123456789'),
+            'is_teacher' => '0',
+        ]);
         // Subjects 
         Subject::create([
             'id' => 'IK-INT001',
@@ -91,6 +109,49 @@ class LmsSeeder extends Seeder
             'description' => 'This is a task.',
             'subject_id' => 'IK-ADV01',
             'points' => '10',
+        ]);
+
+        // Solutions 
+        Solution::create([
+            'student_id' => '4',
+            'task_id' => '1.',
+            'solution' => '# Program to display the Fibonacci sequence up to n-th term
+
+                nterms = int(input("How many terms? "))
+
+                # first two terms
+                n1, n2 = 0, 1
+                count = 0
+
+                # check if the number of terms is valid
+                if nterms <= 0:
+                print("Please enter a positive integer")
+                elif nterms == 1:
+                print("Fibonacci sequence upto",nterms,":")
+                print(n1)
+                else:
+                print("Fibonacci sequence:")
+                while count < nterms:
+                    print(n1)
+                    nth = n1 + n2
+                    # update values
+                    n1 = n2
+                    n2 = nth
+                    count += 1',
+            'evaluatedOn' => '2021-04-10 00:33:19',
+            'points' => '10'
+        ]);
+
+        Solution::create([
+            'student_id' => '5',
+            'task_id' => '1.',
+            'solution' => 'This is a solution 1',
+        ]);
+
+        Solution::create([
+            'student_id' => '6',
+            'task_id' => '1.',
+            'solution' => 'This is a solution 2',
         ]);
     }
 }

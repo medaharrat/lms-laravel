@@ -20,6 +20,7 @@ class Solution extends Model
     protected $fillable = [
         'user_id',
         'task_id',
+        'solution',
         'evaluatedOn',
         'points',
     ];

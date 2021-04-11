@@ -32,6 +32,8 @@ Route::resource('subjects', SubjectsController::class);
 Route::get('/teacher/{id}/subjects', [SubjectsController::class, 'index']);
 /* Tasks */
 Route::resource('tasks', TasksController::class);
+Route::get('/tasks/{id}/evaluate', [TasksController::class, 'evaluation']);
+Route::put('/tasks/{id}/evaluate', [TasksController::class, 'evaluate']);
 /* 
 *   Students Routes 
 */

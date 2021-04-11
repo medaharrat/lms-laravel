@@ -25,10 +25,11 @@
   <ul class="row">
     <div class="col">
       <li><p><b>Credits:</b> {{ $subject->credits }}</p></li>
-      <li><p><b>Date of creation:</b> {{ $subject->created_at }}</p></li>
+      <li><p><b>Date of creation:</b> {{ $subject->created_at->format('d-m-Y') }}</p></li>
     </div>
     <div class="col">
-      <li><p><b>Date of last modification:</b> {{ $subject->updated_at }}</p></li>
+      <li><p><b>Date of last modification:</b> {{ $subject->updated_at->format('d-m-Y') }}</p></li>
+      <!-- Show the time -->
       <li><p><b>Number of students enrolled:</b> 20 (static)</p></li>  
     </div>
   </ul>
@@ -75,7 +76,7 @@
         <div class="action-buttons col">
           <a href="/tasks/create" role="button" class="btn appbtn-primary">
             <i class="fa fa-plus" aria-hidden="true"></i>
-          </a>
+          </a> <!-- pass the subject id here -->
         </div>
       </div>
       <table class="table">

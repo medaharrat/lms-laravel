@@ -28,11 +28,11 @@ class Subject extends Model
         return $this->hasMany(Task::class);
     }
 
-    public function teacher() {
+    public function teachers() {
         return $this->belongsTo(User::class);
     }
 
     public function students() {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'students_subjects', 'subject_id', 'student_id');
     }
 }

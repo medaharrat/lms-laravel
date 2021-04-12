@@ -1,4 +1,4 @@
-@extends('layouts.teacher')
+@extends('layouts.user')
 
 @section('content')
     <h4>Edit a task</h4>

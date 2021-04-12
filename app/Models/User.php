@@ -19,7 +19,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'user_type',
         'password',
         'is_teacher'
     ];
@@ -34,9 +33,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function subject()
+    public function subjects()
     {
-        return $this->is_teacher ? $this->hasMany(Subject::class) : $this->belongsToMany(Subject::class);
+        return $this->is_teacher 
+        ? 
+            $this->hasMany(Subject::class) 
+        : 
+            $this->belongsToMany(Subject::class, 'students_subjects', 'student_id', 'subject_id');
     }
 
 }

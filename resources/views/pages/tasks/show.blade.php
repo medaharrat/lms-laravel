@@ -1,4 +1,4 @@
-@extends('layouts.teacher')
+@extends('layouts.user')
 
 @section('content')
 <div class="fieldset">
@@ -6,17 +6,19 @@
     <div class="typography  col">
       <h4 class="bold">{{ $task->name }}</h4>
     </div>
+    @if(Auth::user()->is_teacher)
     <div class="action-buttons col">
       <a href="/tasks/{{$task->id}}/edit" class="btn appbtn-primary mx-2" role="button">
         <i class="fa fa-pencil" aria-hidden="true"></i>
       </a>
       {!! Form::open(['action' => ['App\Http\Controllers\TasksController@destroy', $task->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
         {{ Form::hidden('_method', 'DELETE') }}
-        <a href="#" class="btn appbtn-danger" role="button" type="submit">
+        <button class="btn appbtn-danger" type="submit">
           <i class="fa fa-trash" aria-hidden="true"></i>
-        </a>
+        </button>
       {!! Form::close() !!}
     </div>
+    @endif
   </div>
   <div class="description">
     <p>{{ $task->description }}</p></li>
@@ -34,7 +36,7 @@
 </div>
 <div class="">
   @if(count($solutionsOfStudents) > 0)
-    <h6 class="p-2 mt-3">Submitted solutions:</h6>
+    <h6 class="p-2 mt-3">{{ Auth::user()->is_teacher ? "Submitted solutions" : "My submissions" }}:</h6>
     <table class="table">
         <thead>
           <tr>
@@ -71,7 +73,7 @@
         </tbody>
     </table>  
     @else
-      <p class="m-3">There are no solutions for this task! </p>
+      <p class="m-3">There are no submitted solutions for this task yet! </p>
     @endif
 </div>
 @endsection

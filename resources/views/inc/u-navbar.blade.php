@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="/teacher">
-            Teacher
+        <a class="navbar-brand" href="{{ Auth::user()->is_teacher ? '/teachers' : '/students' }}">
+            {{ Auth::user()->is_teacher ? 'Teacher' : 'Student' }}
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -11,14 +11,22 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/teacher/{{ Auth::user()->id }}/subjects">My Subjects</a>
+                    <a class="nav-link active" aria-current="page" href="{{ Auth::user()->is_teacher ? '/teachers' : '/students' }}/subjects">
+                        My Subjects
+                    </a>
                 </li>
             </ul>
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="btn appbtn-outlined-light" role="button" href="/subjects/create">New Subject</a>
+                    <a 
+                        class="btn appbtn-outlined-light" 
+                        role="button" 
+                        href={{Auth::user()->is_teacher ? '/teachers/subjects/create' : '/students/subjects/new'}}
+                    >
+                        {{ Auth::user()->is_teacher ? 'New subject' : 'Take a subject' }}
+                    </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

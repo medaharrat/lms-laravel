@@ -3,20 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Subject; 
-use App\Models\User; 
-use App\Models\Task; 
+use Illuminate\Support\Facades\Auth;
+use App\Models\Subject;
+use App\Models\User;
+use App\Models\Task;
 
-class SubjectsController extends Controller
+class TeacherSubjectsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($teacher_id)
+    public function index()
     {
-        $subjects = Subject::orderBy('name', 'asc')->where('teacher_id', $teacher_id)->get();
+        $subjects = Subject::orderBy('name', 'asc')->where('teacher_id', Auth::user()->id)->get();
         return view('pages.teacher.index')->with('subjects', $subjects);
     }
 
@@ -27,7 +28,7 @@ class SubjectsController extends Controller
      */
     public function create()
     {
-        return view('pages.teacher.subjects.create');
+        return view('pages.subjects.create');
     }
 
     /**
@@ -46,13 +47,14 @@ class SubjectsController extends Controller
 
         // Add subject
         $subject = new Subject;
-        $subject->id = $request->input('code');
+        $subject->id = $request->input('id');
         $subject->name = $request->input('name');
         $subject->description = $request->input('description');
         $subject->credits = $request->input('credits');
+        $subject->teacher_id = $request->input('teacher_id');
         $subject->save();
 
-        return redirect('/subjects')->with('success', 'Subject Created Successfully!');
+        return redirect('/teachers/subjects')->with('success', 'Subject Created Successfully!');
     }
 
     /**
@@ -64,9 +66,14 @@ class SubjectsController extends Controller
     public function show($id)
     {
         $subject = Subject::find($id);
-        $students = User::all(); //join with table student_subject and return the student of this subject
+        $students = User::join('students_subjects', 'users.id', '=', 'students_subjects.student_id')
+            ->select('users.name', 'users.email')
+            ->where('students_subjects.subject_id', $id)
+            ->orderBy('users.name', 'asc')
+            ->get();
         $tasks = Task::orderBy('name', 'asc')->where('subject_id', $id)->get();
-        return view('pages.teacher.subjects.show', [
+        
+        return view('pages.subjects.show', [
             'subject' => $subject, 'students' => $students, 'tasks' => $tasks
         ]);
     }
@@ -80,7 +87,7 @@ class SubjectsController extends Controller
     public function edit($id)
     {
         $subject = Subject::find($id);
-        return view('pages.teacher.subjects.edit')->with('subject', $subject);
+        return view('pages.subjects.edit')->with('subject', $subject);
     }
 
     /**
@@ -98,7 +105,7 @@ class SubjectsController extends Controller
         $subject->credits = $request->credits;
         $subject->save();
 
-        return redirect('/subjects/'.$subject->id)->with('success', 'Subject Updated Successfully!');
+        return redirect('/teachers/subjects/'.$subject->id)->with('success', 'Subject Updated Successfully!');
     }
 
     /**
@@ -110,7 +117,7 @@ class SubjectsController extends Controller
     public function destroy($id)
     {
         $subject = Subject::find($id);
-        $subject->delete();
+        $subject->delete(); // Delete from tables with foreign key
         return redirect('/subjects')->with('success', 'Subject Deleted Successfully!');
     }
 }

@@ -1,9 +1,9 @@
-@extends('layouts.teacher')
+@extends('layouts.user')
 
 @section('content')
     <h4>Edit a subject</h4>
     
-    {!! Form::open(['action' => ['App\Http\Controllers\SubjectsController@update', $subject->id], 'method' => 'PUT', 'class' => 'm-4']) !!}
+    {!! Form::open(['action' => ['App\Http\Controllers\TeacherSubjectsController@update', $subject->id], 'method' => 'PUT', 'class' => 'm-4']) !!}
         @csrf
         <div class="row">
             <div class="col col-lg-2">

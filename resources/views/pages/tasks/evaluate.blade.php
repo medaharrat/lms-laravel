@@ -1,8 +1,6 @@
-@extends('layouts.teacher')
+@extends('layouts.user')
 
 @section('content')
-
-
     <div class="row">
         <div class="col col-lg-9">
             <h5 class="bold">Task description</h6>

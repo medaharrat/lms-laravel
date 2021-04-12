@@ -1,22 +1,32 @@
-@extends('layouts.teacher')
+@extends('layouts.user')
 
 @section('content')
 
 <div class="fieldset">
   <div class="fieldset-header row">
     <div class="typography  col">
+      <span class="bold">{{ $subject->id }}</span>
       <h4 class="bold">{{ $subject->name }}</h4>
     </div>
     <div class="action-buttons col">
-      <a href="/subjects/{{$subject->id}}/edit" class="btn appbtn-primary mx-2" role="button">
+      @if(Auth::user()->is_teacher)
+      <a href="/teachers/subjects/{{$subject->id}}/edit" class="btn appbtn-primary mx-2" role="button">
         <i class="fa fa-pencil" aria-hidden="true"></i>
       </a>
-      {!! Form::open(['action' => ['App\Http\Controllers\SubjectsController@destroy', $subject->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
+      {!! Form::open(['action' => ['App\Http\Controllers\TeacherSubjectsController@destroy', $subject->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
         {{ Form::hidden('_method', 'DELETE') }}
-        <a href="#" class="btn appbtn-danger" role="button" type="submit">
+        <button class="btn appbtn-danger" role="button" type="submit">
           <i class="fa fa-trash" aria-hidden="true"></i>
-        </a>
+        </button>
       {!! Form::close() !!}
+      @else
+      {!! Form::open(['action' => ['App\Http\Controllers\StudentSubjectsController@drop', $subject->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
+      {{ Form::hidden('_method', 'DELETE') }}
+        <button class="btn appbtn-danger" type="submit">
+          Leave subject
+        </button>
+      {!! Form::close() !!}
+      @endif
     </div>
   </div>
   <div class="description">
@@ -24,13 +34,17 @@
   </div>
   <ul class="row">
     <div class="col">
-      <li><p><b>Credits:</b> {{ $subject->credits }}</p></li>
       <li><p><b>Date of creation:</b> {{ $subject->created_at->format('d-m-Y') }}</p></li>
-    </div>
-    <div class="col">
       <li><p><b>Date of last modification:</b> {{ $subject->updated_at->format('d-m-Y') }}</p></li>
       <!-- Show the time -->
       <li><p><b>Number of students enrolled:</b> 20 (static)</p></li>  
+    </div>
+    <div class="col">
+      <li><p><b>Credits:</b> {{ $subject->credits }}</p></li>
+      @if (!Auth::user()->is_teacher)
+        <li><p><b>Teacher's name:</b> Ahmed Lm3ti</p></li>  
+        <li><p><b>Teacher's email:</b> piw@piw.p</p></li>  
+      @endif
     </div>
   </ul>
 </div>
@@ -44,7 +58,7 @@
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" data-bs-toggle="tab" type="button" data-bs-target="#tasks"  role="tab" aria-selected="false">
-        Tasks
+        Tasks (whether it was already submitted or not.)
       </button>
     </li>
   </ul>
@@ -74,9 +88,14 @@
           <h6 class="p-2 mt-3">Tasks of the subject:</h6>
         </div>
         <div class="action-buttons col">
-          <a href="/tasks/create" role="button" class="btn appbtn-primary">
+          @if(Auth::user()->is_teacher)
+          {!! Form::open(['action' =>'App\Http\Controllers\TasksController@create', 'method' => 'GET']) !!}
+          <button class="btn appbtn-primary" type="submit">
+            {{ Form::hidden('subject_id', $subject->id) }}
             <i class="fa fa-plus" aria-hidden="true"></i>
-          </a> <!-- pass the subject id here -->
+          </button>
+          {!! Form::close() !!}
+          @endif
         </div>
       </div>
       <table class="table">
@@ -84,6 +103,7 @@
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Points</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -91,6 +111,11 @@
             <tr>
               <td scope="row"><a href="/tasks/{{$task->id}}">{{ $task->name }}</a></td>  
               <td>{{ $task->points }}</td>
+              <td>
+                <a href="/tasks/{{ $task->id }}/submit" class="btn appbtn-primary" role="button">
+                  Submit solution
+                </a>
+              </td>
             </tr>
             @endforeach
           </tbody>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Task;
 use App\Models\Solution;
 use Carbon\Carbon;
@@ -24,10 +25,10 @@ class TasksController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        $subject_id = 3;
-        return view('pages.teacher.tasks.create')->with('subject_id', $subject_id);
+        $subject_id = $request->input('subject_id');;
+        return view('pages.tasks.create')->with('subject_id', $subject_id);
     }
 
     /**
@@ -39,21 +40,21 @@ class TasksController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'taskName'    => 'required',
-            'subjectId'    => 'required',
-            'taskDescription'    => 'required',
-            'taskPoints'    => 'required',
+            'name'    => 'required',
+            'description'    => 'required',
+            'points'    => 'required',
         ]);
 
         // Add the task to the database
         $task = new Task;
-        $task->name = $request->input('taskName');
-        $task->description = $request->input('taskDescription');
-        $task->points = $request->input('taskPoints');
-        $task->subject_id = $request->input('taskPoints');
+        $task->name = $request->input('name');
+        $task->description = $request->input('description');
+        $task->points = $request->input('points');
+        $task->subject_id = $request->input('subject_id');
         $task->save();
 
-        return redirect('/tasks')->with('success', 'Task Created Successfully!');
+        return redirect('/teachers/subjects/'.$request->input('subject_id'))
+            ->with('success', 'Task Created Successfully!');
     }
 
     /**
@@ -76,7 +77,7 @@ class TasksController extends Controller
             ->where([['task_id', '=', $id], ['evaluatedOn', '<>', '', 'and']])
             ->get();
 
-        return view('pages.teacher.tasks.show', [
+        return view('pages.tasks.show', [
             'task' => $task, 
             'solutionsOfStudents' => $solutionsOfStudents,
             'evaluatedSolutions' => $evaluatedSolutions
@@ -92,7 +93,7 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Task::find($id);
-        return view('pages.teacher.tasks.edit')->with('task', $task);
+        return view('pages.tasks.edit')->with('task', $task);
     }
 
     /**
@@ -111,7 +112,7 @@ class TasksController extends Controller
         $task->points = $request->points;
         $task->save();
         
-        return redirect('/subjects/'.$task->subject_id)->with('success', 'Task Updated Successfully!');
+        return redirect('/teachers/subjects/'.$task->subject_id)->with('success', 'Task Updated Successfully!');
     }
 
     /**
@@ -128,7 +129,7 @@ class TasksController extends Controller
             )
             ->where('solutions.id', $solution_id)->first();
 
-        return view('pages.teacher.tasks.evaluate')->with('solution', $solution);
+        return view('pages.tasks.evaluate')->with('solution', $solution);
     }
 
     /**
@@ -176,6 +177,40 @@ class TasksController extends Controller
     {
         $task = Task::find($id);
         $task->delete();
-        return redirect('/subjects/'.$task->subject_id)->with('success', 'Task Deleted Successfully!');
+        return redirect('/teachers/subjects/'.$task->subject_id)->with('success', 'Task Deleted Successfully!');
+    }
+
+    public function submission($id)
+    {
+        $task = Task::find($id);
+        return view('pages.tasks.submit')->with('task', $task);
+    }
+    public function submit(Request $request, $id)
+    {
+        $task = Task::find($id);
+        // Add solution
+        $solution = new Solution;
+        $solution->student_id = Auth::user()->id;
+        $solution->task_id = $task->id;
+        $solution->solution = $request->input('solution');
+        $solution->save;
+
+        $solutionsOfStudents = Solution::join('users', 'solutions.student_id', '=', 'users.id')
+            ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+            ->orderBy('solutions.created_at')
+            ->where('solutions.task_id', $task->id)->get();
+
+        $evaluatedSolutions = Solution::join('users', 'solutions.student_id', '=', 'users.id')
+            ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+            ->orderBy('solutions.created_at')
+            ->where([['task_id', '=', $task->id], ['evaluatedOn', '<>', '', 'and']])
+            ->get();
+
+        return view('pages.tasks.show', [
+            'task' => $task, 
+            'solutionsOfStudents' => $solutionsOfStudents,
+            'evaluatedSolutions' => $evaluatedSolutions
+        ]);
+        return redirect('/students/subjects/'.$task->subject_id)->with('success', 'Solution Submitted Successfully!');
     }
 }

@@ -25,4 +25,9 @@ class HomeController extends Controller
     {
         return view('pages.index');
     }
+
+    public function teacher()
+    {
+        return view('pages.index');
+    }
 }

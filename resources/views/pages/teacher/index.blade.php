@@ -1,4 +1,4 @@
-@extends('layouts.teacher')
+@extends('layouts.user')
 @section('content')
     <h1>Teachers space</h1>
     @if (count($subjects) > 0)
@@ -17,7 +17,7 @@
             <tr>
               <th scope="row">{{ $subject->id }}</th>
               <td>
-                <a href="/subjects/{{ $subject->id }}">
+                <a href="/teachers/subjects/{{ $subject->id }}">
                   {{ $subject->name }}
                 </a>
               </td>
@@ -28,7 +28,7 @@
           </tbody>
       </table>  
     @else
-      <p>No subjects found!</p>
+      <p class="m-3">No subjects found!</p>
     @endif
 
 @endsection

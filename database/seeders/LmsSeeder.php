@@ -88,7 +88,19 @@ class LmsSeeder extends Seeder
             'teacher_id' => '3',
             'credits' => '5',
         ]);
-
+        /* Students Subjects
+        DB::table('students_subjects')->create([
+            'student_id' => '1',
+            'subject_id' => 'IK-INT001',
+        ]);
+        DB::table('students_subjects')->create([
+            'student_id' => '2',
+            'subject_id' => 'IK-MAC01',
+        ]);
+        DB::table('students_subjects')->create([
+            'student_id' => '3',
+            'subject_id' => 'IK-ADV01',
+        ]);*/
         // Tasks 
         Task::create([
             'name' => 'Server Side Assignment',

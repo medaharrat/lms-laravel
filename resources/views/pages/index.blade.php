@@ -1,4 +1,4 @@
-@extends(Auth::user() && Auth::user()->is_teacher == "1" ? 'layouts.teacher' : 'layouts.app')
+@extends(Auth::user() && Auth::user() ? 'layouts.user' : 'layouts.app')
 
 @section('content')
     <div class="appcard appcard-light max-w-7">

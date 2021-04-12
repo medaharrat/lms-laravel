@@ -47,7 +47,7 @@ class TeacherSubjectsController extends Controller
 
         // Add subject
         $subject = new Subject;
-        $subject->id = $request->input('id');
+        $subject->code = $request->input('code');
         $subject->name = $request->input('name');
         $subject->description = $request->input('description');
         $subject->credits = $request->input('credits');
@@ -100,6 +100,7 @@ class TeacherSubjectsController extends Controller
     public function update(Request $request, $id)
     {
         $subject = Subject::find($id);
+        $subject->code = $request->code;
         $subject->name = $request->name;
         $subject->description = $request->description;
         $subject->credits = $request->credits;
@@ -118,6 +119,6 @@ class TeacherSubjectsController extends Controller
     {
         $subject = Subject::find($id);
         $subject->delete(); // Delete from tables with foreign key
-        return redirect('/subjects')->with('success', 'Subject Deleted Successfully!');
+        return redirect('/teachers/subjects')->with('success', 'Subject Deleted Successfully!');
     }
 }

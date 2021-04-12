@@ -112,7 +112,7 @@ class TasksController extends Controller
         $task->points = $request->points;
         $task->save();
         
-        return redirect('/teachers/subjects/'.$task->subject_id)->with('success', 'Task Updated Successfully!');
+        return redirect('/tasks/'.$task->id)->with('success', 'Task Updated Successfully!');
     }
 
     /**

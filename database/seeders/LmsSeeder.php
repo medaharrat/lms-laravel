@@ -66,7 +66,7 @@ class LmsSeeder extends Seeder
         ]);
         // Subjects 
         Subject::create([
-            'id' => 'IK-INT001',
+            'code' => 'IK-INT001',
             'name' => 'Introduction to Data Science',
             'description' => 'This course is a part of the first semester of the computer science master program.',
             'teacher_id' => '1',
@@ -74,7 +74,7 @@ class LmsSeeder extends Seeder
         ]);
 
         Subject::create([
-            'id' => 'IK-MAC01',
+            'code' => 'IK-MAC01',
             'name' => 'Machine Learning',
             'description' => 'This course is a part of the second semester of the computer science master program data science specialization.',
             'teacher_id' => '2',
@@ -82,7 +82,7 @@ class LmsSeeder extends Seeder
         ]);
 
         Subject::create([
-            'id' => 'IK-ADV01',
+            'code' => 'IK-ADV01',
             'name' => 'Advanced Machine Learning',
             'description' => 'This course is a part of the third semester of the computer science master program data science specialization.',
             'teacher_id' => '3',
@@ -105,21 +105,21 @@ class LmsSeeder extends Seeder
         Task::create([
             'name' => 'Server Side Assignment',
             'description' => 'This is a task.',
-            'subject_id' => 'IK-INT001',
+            'subject_id' => '1',
             'points' => '60'
         ]);
 
         Task::create([
             'name' => 'Front Side Assignment',
             'description' => 'This is a task.',
-            'subject_id' => 'IK-MAC01',
+            'subject_id' => '2',
             'points' => '60',
         ]);
 
         Task::create([
             'name' => 'Homework 1',
             'description' => 'This is a task.',
-            'subject_id' => 'IK-ADV01',
+            'subject_id' => '3',
             'points' => '10',
         ]);
 

@@ -8,8 +8,8 @@
         {{ Form::hidden('teacher_id', Auth::user()->id, ['class' => 'form-control']) }}
         <div class="row">
             <div class="col col-lg-2">
-                {{ Form::label('id', 'Subject Code') }}
-                {{ Form::text('id', 'INF-XXXXXX', ['class' => 'form-control'/*, 'disabled'*/]) }}
+                {{ Form::label('code', 'Subject Code') }}
+                {{ Form::text('code', 'INF-XXXXXX', ['class' => 'form-control'/*, 'disabled'*/]) }}
             </div>
             <div class="col col-lg-10">
                 {{ Form::label('name', 'Subject Name') }}

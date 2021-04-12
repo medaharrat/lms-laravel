@@ -2,8 +2,15 @@
 
 @section('content')
 {!! Form::open(['action' => ['App\Http\Controllers\TasksController@submit', $task->id], 'method' => 'POST']) !!}
+@csrf  
+<div>  
+    <div class="col-lg-12 row">
+        <div class="col">subject name</div>
+        <div class="col">Teacher name</div>
+        <div class="col">Points</div>
+    </div>
+    <hr>
     <div class="row">
-        @csrf
         <div class="col col-lg-9">
             <h5 class="bold">Task description</h6>
             <div class="description">
@@ -20,5 +27,6 @@
             </div>
         </div>
     </div>
+</div>
 {!! Form::close() !!}
 @endsection

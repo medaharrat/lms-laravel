@@ -2,7 +2,7 @@
 @section('content')
   <h1>Take a new subject</h1>
   @if(count($subjects) > 0)
-    <h6>Available subjects:</h6>
+    <h6 class="mt-3">Available subjects:</h6>
     <table class="table">
         <thead>
           <tr>
@@ -17,11 +17,11 @@
         <tbody>
           @foreach ($subjects as $subject)
           <tr>
-            <th scope="row">{{ $subject->id }}</th>
+            <th scope="row">{{ $subject->code }}</th>
             <td>{{ $subject->name }}</td>
             <td>{{ $subject->description }}</td>
             <td>{{ $subject->credits }}</td>
-            <td>Ahmed S.</td>
+            <td>{{ $subject->teacher_name }}</td>
             <td>
               {!! Form::open(['action' => ['App\Http\Controllers\StudentSubjectsController@store'], 'method' => 'POST', 'class' => 'pull-right']) !!}
               {{ Form::hidden('subject_id', $subject->id) }}

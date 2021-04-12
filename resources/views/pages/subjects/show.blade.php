@@ -5,7 +5,7 @@
 <div class="fieldset">
   <div class="fieldset-header row">
     <div class="typography  col">
-      <span class="bold">{{ $subject->id }}</span>
+      <span class="bold">{{ $subject->code }}</span>
       <h4 class="bold">{{ $subject->name }}</h4>
     </div>
     <div class="action-buttons col">
@@ -37,13 +37,13 @@
       <li><p><b>Date of creation:</b> {{ $subject->created_at->format('d-m-Y') }}</p></li>
       <li><p><b>Date of last modification:</b> {{ $subject->updated_at->format('d-m-Y') }}</p></li>
       <!-- Show the time -->
-      <li><p><b>Number of students enrolled:</b> 20 (static)</p></li>  
+      <li><p><b>Number of students enrolled:</b> {{ count($students) }}</p></li>  
     </div>
     <div class="col">
       <li><p><b>Credits:</b> {{ $subject->credits }}</p></li>
       @if (!Auth::user()->is_teacher)
-        <li><p><b>Teacher's name:</b> Ahmed Lm3ti</p></li>  
-        <li><p><b>Teacher's email:</b> piw@piw.p</p></li>  
+        <li><p><b>Teacher's name:</b> {{ $subject->teacher_name }}</p></li>  
+        <li><p><b>Teacher's email:</b> {{ $subject->teacher_email }}</p></li>  
       @endif
     </div>
   </ul>
@@ -92,7 +92,7 @@
           {!! Form::open(['action' =>'App\Http\Controllers\TasksController@create', 'method' => 'GET']) !!}
           <button class="btn appbtn-primary" type="submit">
             {{ Form::hidden('subject_id', $subject->id) }}
-            <i class="fa fa-plus" aria-hidden="true"></i>
+            New Task
           </button>
           {!! Form::close() !!}
           @endif
@@ -103,7 +103,9 @@
             <tr>
               <th scope="col">Name</th>
               <th scope="col">Points</th>
+              @if(!Auth::user()->is_teacher)
               <th scope="col"></th>
+              @endif
             </tr>
           </thead>
           <tbody>
@@ -111,11 +113,13 @@
             <tr>
               <td scope="row"><a href="/tasks/{{$task->id}}">{{ $task->name }}</a></td>  
               <td>{{ $task->points }}</td>
+              @if(!Auth::user()->is_teacher)
               <td>
                 <a href="/tasks/{{ $task->id }}/submit" class="btn appbtn-primary" role="button">
                   Submit solution
                 </a>
               </td>
+              @endif
             </tr>
             @endforeach
           </tbody>

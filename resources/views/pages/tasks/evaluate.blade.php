@@ -23,7 +23,7 @@
                 <div class="row">
                     {{ Form::label('evaluation', 'Score') }}
                     <div class="col col-lg-10">
-                        {{ Form::number('evaluation', '', ['class' => 'form-control']) }} 
+                        {{ Form::number('evaluation', '', ['class' => 'form-control', 'min' => 0, 'max' => $solution->taskPoints]) }} 
                     </div>
                     <div class="col col-lg-2">
                         <span>/{{ $solution->taskPoints }}</span>

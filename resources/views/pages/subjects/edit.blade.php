@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col col-lg-2">
                 {{ Form::label('code', 'Subject Code') }}
-                {{ Form::text('code', $subject->id, ['class' => 'form-control', 'disabled']) }}
+                {{ Form::text('code', $subject->code, ['class' => 'form-control']) }}
             </div>
             <div class="col col-lg-10">
                 {{ Form::label('name', 'Subject Name') }}

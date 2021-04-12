@@ -17,12 +17,9 @@ use App\Http\Controllers\TasksController;
 |
 */
 
+/* Pages */
 Route::get('/', [HomeController::class, 'index']);
-
-Route::get('/contact',  function () {
-    return view('pages.contact');
-});
-
+Route::get('/contact', [HomeController::class, 'contact']);
 Route::get('/teachers', [HomeController::class, 'index']);
 Route::get('/students', [HomeController::class, 'index']);
 

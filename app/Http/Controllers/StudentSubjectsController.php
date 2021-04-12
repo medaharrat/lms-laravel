@@ -11,19 +11,27 @@ use App\Models\Task;
 
 class StudentSubjectsController extends Controller
 {
-
     public function index()
     {
         $student = User::find(Auth::user()->id);
-        $subjects = $student->subjects()->get();
+        $subjects = Subject::join('users', 'subjects.teacher_id', '=', 'users.id')
+            ->join('students_subjects', 'subjects.id', '=', 'students_subjects.subject_id')
+            ->select('subjects.code', 'subjects.id', 'subjects.name', 'subjects.description', 'subjects.credits', 'users.name as teacher_name', 'users.email as teacher_email', 'subjects.created_at', 'subjects.updated_at')
+            ->where('students_subjects.student_id', Auth::user()->id)
+            ->orderBy('subjects.name', 'asc')
+            ->get(); 
 
         return view('pages.student.index')->with('subjects', $subjects);
     }
 
     public function take()
     {
-        $subjects = Subject::select()
-            ->whereNotIn('subjects.id', DB::table('students_subjects')->select('subject_id'))
+        $subjects = Subject::select('subjects.code', 'subjects.id', 'subjects.name', 'subjects.description', 'subjects.credits', 'users.name as teacher_name')
+            ->join('users', 'subjects.teacher_id', '=', 'users.id')
+            ->whereNotIn('subjects.id', 
+                DB::table('students_subjects')
+                ->select('subject_id')
+                ->where('student_id', Auth::user()->id))
             ->get();
 
         return view('pages.subjects.take')->with('subjects', $subjects);
@@ -41,13 +49,18 @@ class StudentSubjectsController extends Controller
     
     public function show($id)
     {
-        $subject = Subject::find($id);
+        $subject = Subject::join('users', 'subjects.teacher_id', '=', 'users.id')
+            ->select('subjects.code', 'subjects.id', 'subjects.name', 'subjects.description', 'subjects.credits', 'users.name as teacher_name', 'users.email as teacher_email', 'subjects.created_at', 'subjects.updated_at')
+            ->where('subjects.id', $id)
+            ->orderBy('subjects.name', 'asc')
+            ->first();
         $students = User::join('students_subjects', 'users.id', '=', 'students_subjects.student_id')
             ->select('users.name', 'users.email')
             ->where('students_subjects.subject_id', $id)
             ->orderBy('users.name', 'asc')
             ->get();
         $tasks = Task::orderBy('name', 'asc')->where('subject_id', $id)->get();
+        
         return view('pages.subjects.show', [
             'subject' => $subject, 'students' => $students, 'tasks' => $tasks
         ]);

@@ -43,7 +43,10 @@
             <th scope="col">Student name</th>
             <th scope="col">Date of submission</th>
             <th scope="col">Student email</th>
-            <th scope="col">Evaluation</th>
+            <th scope="col">Grade</th>
+            @if (!Auth::user()->is_teacher)
+            <th scope="col">Submissions</th>
+            @endif
           </tr>
         </thead>
         <tbody>
@@ -53,22 +56,34 @@
             <td>{{ $solution->created_at->format('d-m-Y') }}</td>
             <td>{{ $solution->email }}</td>
             <td>
-              @if (!strtotime($solution->evaluatedOn) > 0)
+              @if (Auth::user()->is_teacher && !strtotime($solution->evaluatedOn) > 0)
               <a href="/tasks/{{ $solution->id }}/evaluate" class="appbadge appbadge-secondary" role="button">
                 Evaluate
               </a>
               @else
               <div class="row">
+                @if (!is_null($solution->points))
                 <span class="col">
-                  <b>{{ $solution->points }}</b>pts
+                  <b>{{ is_null($solution->points) ? '-' : $solution->points.'pts' }}</b>
                 </span>
                 <span class="col">
                   <i class="fa fa-info-circle" aria-hidden="true" title="Evaluted on {{ $solution->evaluatedOn }}"></i>
                 </span>
+                @else 
+                <span class="text-center">-</span>
+                @endif
               </div>
               @endif
             </td>
-          </tr>      
+            @if (!Auth::user()->is_teacher)
+            <td>
+              <ol>
+                <li><a href="#">View Submission 1</a></li>
+                <li><a href="#">View Submission 2</a></li>
+              </ol>
+            </td>
+            @endif
+          </tr>   
           @endforeach
         </tbody>
     </table>  

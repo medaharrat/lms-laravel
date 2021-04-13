@@ -4,10 +4,12 @@
 {!! Form::open(['action' => ['App\Http\Controllers\TasksController@submit', $task->id], 'method' => 'POST']) !!}
 @csrf  
 <div>  
+    <h4 class="bold">{{ $task->name }}</h4>
+    <hr>
     <div class="col-lg-12 row">
-        <div class="col">subject name</div>
-        <div class="col">Teacher name</div>
-        <div class="col">Points</div>
+        <div class="col"><span class="bold">Subject:</span> {{ $task->subject_name }}</div>
+        <div class="col"><span class="bold">Points:</span> {{ $task->points }}</div>
+        <div class="col"><span class="bold">Teacher:</span> {{ $task->teacher_name }}</div>
     </div>
     <hr>
     <div class="row">

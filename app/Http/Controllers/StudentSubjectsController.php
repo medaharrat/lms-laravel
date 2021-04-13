@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Subject;
 use App\Models\User;
 use App\Models\Task;
+use App\Models\Solution;
 
 class StudentSubjectsController extends Controller
 {
@@ -61,8 +62,14 @@ class StudentSubjectsController extends Controller
             ->get();
         $tasks = Task::orderBy('name', 'asc')->where('subject_id', $id)->get();
         
+        $solutions = Solution::join('tasks', 'solutions.task_id', '=', 'tasks.id')
+            ->select('*')
+            ->where(['tasks.subject_id' => $id, 'solutions.student_id', Auth::user()->id])
+            ->orderBy('name', 'asc')
+            ->get(); //Think about how to show if a student submitted a solution for a specific task and show it in the subjects.show page
+        
         return view('pages.subjects.show', [
-            'subject' => $subject, 'students' => $students, 'tasks' => $tasks
+            'subject' => $subject, 'students' => $students, 'tasks' => $tasks, 'solutions' => $solutions
         ]);
     }
 

@@ -182,7 +182,12 @@ class TasksController extends Controller
 
     public function submission($id)
     {
-        $task = Task::find($id);
+        $task = Task::join('subjects', 'tasks.subject_id', '=', 'subjects.id')
+            ->join('users', 'subjects.teacher_id', '=', 'users.id')
+            ->select('subjects.code', 'subjects.name as subject_name', 'users.name as teacher_name','tasks.id', 'tasks.name', 'tasks.points', 'tasks.description')
+            ->where('tasks.id', $id)
+            ->first(); 
+            
         return view('pages.tasks.submit')->with('task', $task);
     }
     public function submit(Request $request, $id)
@@ -193,7 +198,7 @@ class TasksController extends Controller
         $solution->student_id = Auth::user()->id;
         $solution->task_id = $task->id;
         $solution->solution = $request->input('solution');
-        $solution->save;
+        $solution->save();
 
         $solutionsOfStudents = Solution::join('users', 'solutions.student_id', '=', 'users.id')
             ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')

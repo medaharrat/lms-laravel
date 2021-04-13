@@ -115,9 +115,11 @@
               <td>{{ $task->points }}</td>
               @if(!Auth::user()->is_teacher)
               <td>
+                
                 <a href="/tasks/{{ $task->id }}/submit" class="btn appbtn-primary" role="button">
                   Submit solution
                 </a>
+
               </td>
               @endif
             </tr>

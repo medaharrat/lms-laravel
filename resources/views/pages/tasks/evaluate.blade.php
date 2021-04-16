@@ -24,16 +24,13 @@
                     {{ Form::label('evaluation', 'Score') }}
                     <div class="col col-lg-10">
                         {{ Form::number('evaluation', '', ['class' => 'form-control', 'min' => 0, 'max' => $solution->taskPoints]) }} 
+                        {!!$errors->first("evaluation", "<span class='text-danger'>:message</span>")!!}
                     </div>
                     <div class="col col-lg-2">
                         <span>/{{ $solution->taskPoints }}</span>
                     </div>
                 </div>
-            </div>
-            <div class="mt-3">
-                {{ Form::label('comment', 'Add a comment') }}
-                {{ Form::textarea('comment', '', ['class' => 'form-control']) }}
-            </div>       
+            </div>     
             <div class="mt-3">
                 <button class="btn appbtn-primary" type="submit">
                     Evaluate

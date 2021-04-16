@@ -64,6 +64,7 @@
   </ul>
   <div class="tab-content" id="teacher-tab">
     <div class="tab-pane fade show active" id="students" role="tabpanel">
+      @if(count($students) > 0)
       <h6 class="p-2 mt-3">Students enrolled in the subject:</h6>
       <table class="table">
           <thead>
@@ -81,6 +82,11 @@
             @endforeach
           </tbody>
       </table>  
+      @else 
+      <p class="m-3">
+        No students are currently enrolled in this subject!
+      </p>
+      @endif
     </div>
     <div class="tab-pane fade" id="tasks" role="tabpanel">
       <div class="row">
@@ -111,15 +117,20 @@
           <tbody>
             @foreach ($tasks as $task)
             <tr>
-              <td scope="row"><a href="/tasks/{{$task->id}}">{{ $task->name }}</a></td>  
+              <td scope="row"><a href="{{Auth::user()->is_teacher ? '/tasks/'.$task->id : '/tasks/'.$task->id.'/submit' }}">{{ $task->name }}</a></td>  
               <td>{{ $task->points }}</td>
               @if(!Auth::user()->is_teacher)
               <td>
-                
-                <a href="/tasks/{{ $task->id }}/submit" class="btn appbtn-primary" role="button">
-                  Submit solution
-                </a>
-
+                <!-- FIX this -->
+                @foreach ($solutions as $solution)
+                    @if($solution->task_id == $task->id)
+                    <p>- Last submitted on {{$solution->created_at}}</p>
+                    @else
+                    <a href="/tasks/{{ $task->id }}/submit" class="btn appbtn-primary" role="button">
+                      Submit solution
+                    </a>
+                    @endif
+                @endforeach
               </td>
               @endif
             </tr>

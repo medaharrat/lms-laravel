@@ -134,9 +134,10 @@ a:hover {
 }
 
 .editor { 
-    position: absolute;
+    position: relative;
     background-color: rgb(245, 245, 245);
-    height: 50%;
+    width: 95%;
+    height: 300px;
     margin: 20px;
     padding-top: 20px;
     padding-left: 20px;

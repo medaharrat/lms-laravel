@@ -22,68 +22,35 @@ class LmsSeeder extends Seeder
     public function run()
     {
         // Users
-        User::create(
-            [
-            'name' => Str::random(10),
-            'email' => Str::random(10).'@gmail.com' ,
-            'password' => Hash::make('123456789'),
-            'is_teacher' => '1',
-            ],
-            [
-            'name' => Str::random(10),
-            'email' => Str::random(10).'@gmail.com' ,
-            'password' => Hash::make('123456789'),
-            'is_teacher' => '1',
-            ],
-            [
-            'name' => Str::random(10),
-            'email' => Str::random(10).'@gmail.com' ,
-            'password' => Hash::make('123456789'),
-            'is_teacher' => '1',
-            ],
-            [
-            'name' => Str::random(10),
-            'email' => Str::random(10).'@gmail.com' ,
-            'password' => Hash::make('123456789'),
-            'is_teacher' => '0',
-            ],
-            [
-            'name' => Str::random(10),
-            'email' => Str::random(10).'@gmail.com' ,
-            'password' => Hash::make('123456789'),
-            'is_teacher' => '0',
-            ],
-            [
-            'name' => Str::random(10),
-            'email' => Str::random(10).'@gmail.com' ,
-            'password' => Hash::make('123456789'),
-            'is_teacher' => '0',
-            ],
-        );
+        for($i = 1; $i <= 3; $i++){
+            User::create([
+                'name' => Str::random(10),
+                'email' => Str::random(10).'@gmail.com' ,
+                'password' => Hash::make('123456789'),
+                'is_teacher' => '1'
+            ]);
+        };
+
+        for($i = 1; $i <= 3; $i++){
+            User::create([
+                'name' => Str::random(10),
+                'email' => Str::random(10).'@gmail.com' ,
+                'password' => Hash::make('123456789'),
+                'is_teacher' => '0'
+            ]);
+        };
+
         // Subjects 
-        Subject::create(
-            [
-            'code' => 'IK-INT001',
-            'name' => 'Introduction to Data Science',
-            'description' => 'This course is a part of the first semester of the computer science master program.',
-            'teacher_id' => '1',
-            'credits' => '5'
-            ],
-            [
-            'code' => 'IK-MAC01',
-            'name' => 'Machine Learning',
-            'description' => 'This course is a part of the second semester of the computer science master program data science specialization.',
-            'teacher_id' => '2',
-            'credits' => '5',
-            ],
-            [
-            'code' => 'IK-ADV01',
-            'name' => 'Advanced Machine Learning',
-            'description' => 'This course is a part of the third semester of the computer science master program data science specialization.',
-            'teacher_id' => '3',
-            'credits' => '5',
-            ]
-        );
+        for($i = 1; $i <= 3; $i++){
+            Subject::create([
+                'code' => 'IK-SUB00'.$i,
+                'name' => 'Machine Learning '.$i,
+                'description' => 'This is a master course',
+                'teacher_id' => $i,
+                'credits' => '5'
+            ]);
+        }
+
         /* Students Subjects
         DB::table('students_subjects')->create([
             'student_id' => '1',
@@ -97,43 +64,24 @@ class LmsSeeder extends Seeder
             'student_id' => '3',
             'subject_id' => 'IK-ADV01',
         ]);*/
+
         // Tasks 
-        Task::create(
-        [
-            'name' => 'Server Side Assignment',
-            'description' => 'This is a task.',
-            'subject_id' => '1',
-            'points' => '60'
-        ],
-        [
-            'name' => 'Front Side Assignment',
-            'description' => 'This is a task.',
-            'subject_id' => '2',
-            'points' => '60',
-        ],
-        [
-            'name' => 'Homework 1',
-            'description' => 'This is a task.',
-            'subject_id' => '3',
-            'points' => '10',
-        ]);
+        for($i = 1; $i <= 3; $i++){
+            Task::create([
+                'name' => 'Task '.$i,
+                'description' => 'This is a task.',
+                'subject_id' => $i,
+                'points' => '60'
+            ]);
+        }
 
         // Solutions 
-        Solution::create(
-        [
-            'student_id' => '4',
-            'task_id' => '1.',
-            'solution' => 'This is a solution 0'
-        ],
-        [
-            'student_id' => '5',
-            'task_id' => '1.',
-            'solution' => 'This is a solution 1',
-        ],
-        [
-            'student_id' => '6',
-            'task_id' => '1.',
-            'solution' => 'This is a solution 2',
-        ]);
+        for($i = 1; $i <= 3; $i++){
+            Solution::create([
+                'student_id' => $i,
+                'task_id' => '1',
+                'solution' => 'This is a solution '.$i
+            ]);
+        }
     }
 }

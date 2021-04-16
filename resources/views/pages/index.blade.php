@@ -1,6 +1,7 @@
 @extends(Auth::user() && Auth::user() ? 'layouts.user' : 'layouts.app')
 
 @section('content')
+@include('inc.alerts')
     <div class="appcard appcard-light max-w-7">
         <div class="appcard-body">
             <p class="font-weight-light">{{$description}}</p>

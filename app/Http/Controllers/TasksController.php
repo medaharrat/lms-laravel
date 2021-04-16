@@ -39,10 +39,10 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        // Form validation
         $this->validate($request, [
-            'name'    => 'required',
+            'name'    => 'required|min:5',
             'description'    => 'required',
-            'points'    => 'required',
         ]);
 
         // Add the task to the database
@@ -105,8 +105,14 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $task = Task::find($id);
+        // Form validation
+        $this->validate($request, [
+            'name'    => 'required|min:5',
+            'description'    => 'required',
+        ]);
 
+        // Update
+        $task = Task::find($id);
         $task->name = $request->name;
         $task->description = $request->description;
         $task->points = $request->points;
@@ -144,8 +150,14 @@ class TasksController extends Controller
         $solution = Solution::find($id);
         $task = Task::find($solution->task_id);
 
+        // Form validation
+        $this->validate($request, [
+            'evaluation'    => 'required|numeric|min:0|max:'.$task->points,
+        ]);
+
+        // Evaluation
         $solution->evaluatedOn = Carbon::now()->toDateTimeString();
-        $solution->points = $request->evaluation;
+        $solution->points = $request->input('evaluation');
         $solution->save();
 
         // find a better way not to repeat this
@@ -193,6 +205,12 @@ class TasksController extends Controller
     public function submit(Request $request, $id)
     {
         $task = Task::find($id);
+
+        // Form validation
+        $this->validate($request, [
+            'solution'    => 'required',
+        ]);
+
         // Add solution
         $solution = new Solution;
         $solution->student_id = Auth::user()->id;

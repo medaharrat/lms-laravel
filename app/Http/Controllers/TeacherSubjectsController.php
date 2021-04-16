@@ -41,8 +41,9 @@ class TeacherSubjectsController extends Controller
     {
         // Form Validation
         $this->validate($request, [
-            'name'    => 'required',
-            'credits' => 'required',
+            'name'    => 'required|min:3',
+            'code'    => 'required|min:9|max:9',
+            'credits' => 'required|numeric',
         ]);
 
         // Add subject
@@ -99,6 +100,14 @@ class TeacherSubjectsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // Form Validation
+        $this->validate($request, [
+            'name'    => 'required|min:3',
+            'code'    => 'required|min:9|max:9',
+            'credits' => 'required|numeric',
+        ]);
+
+        // Update
         $subject = Subject::find($id);
         $subject->code = $request->code;
         $subject->name = $request->name;

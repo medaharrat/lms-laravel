@@ -8,8 +8,8 @@
     <hr>
     <div class="col-lg-12 row">
         <div class="col"><span class="bold">Subject:</span> {{ $task->subject_name }}</div>
-        <div class="col"><span class="bold">Points:</span> {{ $task->points }}</div>
         <div class="col"><span class="bold">Teacher:</span> {{ $task->teacher_name }}</div>
+        <div class="col"><span class="bold">Points:</span> {{ $task->points }}</div>
     </div>
     <hr>
     <div class="row">
@@ -19,6 +19,7 @@
                 <p>{{ $task->description }}</p></li>
             </div>
             <h5 class="bold">Your solution <span class="note">(type your solution below)</span></h6>
+            {!!$errors->first("solution", "<span class='text-danger'>:message</span>")!!}
             {{ Form::textarea('solution', '', ['class' => 'editor col-lg-7', 'autofocus', 'spellcheck' => 'false']) }}
         </div>
         <div class="col col-lg-3" style="text-align: right;">

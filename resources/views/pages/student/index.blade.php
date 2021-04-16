@@ -1,5 +1,7 @@
 @extends('layouts.user')
+
 @section('content')
+@include('inc.alerts')
     <h1>Students space</h1>
     @if(count($subjects) > 0)
       <h6 class="mt-4">Subjects taken by me:</h6>

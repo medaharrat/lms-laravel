@@ -21,6 +21,7 @@ class CreateSubjectsTable extends Migration
             $table->integer('credits');
             $table->integer('teacher_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

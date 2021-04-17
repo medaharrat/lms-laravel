@@ -10,15 +10,17 @@
     </div>
     <div class="action-buttons col">
       @if(Auth::user()->is_teacher)
-      <a href="/teachers/subjects/{{$subject->id}}/edit" class="btn appbtn-primary mx-2" role="button">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-      </a>
-      {!! Form::open(['action' => ['App\Http\Controllers\TeacherSubjectsController@destroy', $subject->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
-        {{ Form::hidden('_method', 'DELETE') }}
-        <button class="btn appbtn-danger" role="button" type="submit">
-          <i class="fa fa-trash" aria-hidden="true"></i>
-        </button>
-      {!! Form::close() !!}
+        @if(Auth::user()->id == $subject->teacher_id)
+        <a href="/teachers/subjects/{{$subject->id}}/edit" class="btn appbtn-primary mx-2" role="button">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </a>
+        {!! Form::open(['action' => ['App\Http\Controllers\TeacherSubjectsController@destroy', $subject->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
+          {{ Form::hidden('_method', 'DELETE') }}
+          <button class="btn appbtn-danger" role="button" type="submit">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        {!! Form::close() !!}
+        @endif
       @else
       {!! Form::open(['action' => ['App\Http\Controllers\StudentSubjectsController@drop', $subject->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
       {{ Form::hidden('_method', 'DELETE') }}
@@ -93,7 +95,7 @@
           <h6 class="p-2 mt-3">{{count($tasks) > 0 ? 'Tasks of the subject:' : 'There are no tasks for this subject.'}}</h6>
         </div>
         <div class="action-buttons col">
-          @if(Auth::user()->is_teacher)
+          @if(Auth::user()->is_teacher && Auth::user()->id == $subject->teacher_id)
           {!! Form::open(['action' =>'App\Http\Controllers\TasksController@create', 'method' => 'GET']) !!}
           <button class="btn appbtn-primary" type="submit">
             {{ Form::hidden('subject_id', $subject->id) }}

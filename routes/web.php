@@ -37,7 +37,7 @@ Route::put('/teachers/subjects/{subject_id}', [TeacherSubjectsController::class,
 
 /* Tasks */
 Route::resource('tasks', TasksController::class);
-Route::get('/tasks/{id}/evaluate', [TasksController::class, 'evaluation']);
+Route::get('/tasks/{task_id}/evaluate/{solution_id}', [TasksController::class, 'evaluation']);
 Route::put('/tasks/{id}/evaluate', [TasksController::class, 'evaluate']);
 Route::get('/tasks/{id}/submit', [TasksController::class, 'submission']);
 Route::post('/tasks/{id}', [TasksController::class, 'submit']);
@@ -48,20 +48,3 @@ Route::get('/students/subjects/new', [StudentSubjectsController::class, 'take'])
 Route::get('/students/subjects/{subject_id}', [StudentSubjectsController::class, 'show']);
 Route::post('/students/subjects', [StudentSubjectsController::class, 'store']);
 Route::delete('/students/subjects/{subject_id}', [StudentSubjectsController::class, 'drop']);
-
-/* 
-Route::group(['middleware' => ['auth']], function() {
-    Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('products', ProductController::class);
-});
-in controller
-$this->middleware('permission:role-list|role-create|role-edit|role-delete', ['only' => ['index','store']]);
-$this->middleware('permission:role-create', ['only' => ['create','store']]);
-$this->middleware('permission:role-edit', ['only' => ['edit','update']]);
-$this->middleware('permission:role-delete', ['only' => ['destroy']]);
-in method 'create'
-
-$permission = Permission::get();
-return view('roles.create',compact('permission'));
-*/

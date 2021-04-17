@@ -6,33 +6,17 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         // $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         $description = "This web application is a form of a Learning Management System (LMS) which allows students to perform actions such as taking a subject, submitting a task and allows the professors to manage subjects and tasks. The app is developed using Laravel 8 and Bootstrap. The template has been developed fully from scratch and no third party templating was used.";
         return view('pages.index')->with('description', $description);
     }
 
-    
-    /**
-     * Show the application contact page.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function contact()
     {
         $name = "Aharrat Mohamed";
@@ -40,10 +24,5 @@ class HomeController extends Controller
         $email = "mohamedaharrat1@gmail.com";
 
         return view('pages.contact', ['name' => $name, 'neptun_code' => $neptun_code, 'email' => $email]);
-    }
-
-    public function teacher()
-    {
-        return view('pages.index');
     }
 }

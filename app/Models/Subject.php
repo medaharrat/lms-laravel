@@ -30,7 +30,7 @@ class Subject extends Model
         return $this->hasMany(Task::class);
     }
 
-    public function teachers() {
+    public function teacher() {
         return $this->belongsTo(User::class);
     }
 

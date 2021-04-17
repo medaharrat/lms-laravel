@@ -10,6 +10,11 @@ use Carbon\Carbon;
 
 class TasksController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function create(Request $request)
     {
         $subject_id = $request->input('subject_id');;
@@ -39,7 +44,7 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = Task::find($id);
-
+        
         $solutionsOfStudents = Auth::user()->is_teacher ? 
             Solution::join('users', 'solutions.student_id', '=', 'users.id')
                 ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
@@ -76,6 +81,12 @@ class TasksController extends Controller
     public function edit($id)
     {
         $task = Task::find($id);
+
+        // Permission
+        if(Auth::user()->id !== $task->subject()->teacher()->id){
+            return redirect('/tasks/'.$id)->with('error', "Unauthorized access!");
+        }
+
         return view('pages.tasks.edit')->with('task', $task);
     }
 
@@ -89,6 +100,11 @@ class TasksController extends Controller
 
         // Update
         $task = Task::find($id);
+
+        // Permission
+        if(Auth::user()->is_teacher != $task->subject->teacher_id)
+            return redirect('/tasks/'.$task->id)->with('error', "Unauthorized access!");
+
         $task->name = $request->name;
         $task->description = $request->description;
         $task->points = $request->points;
@@ -97,22 +113,31 @@ class TasksController extends Controller
         return redirect('/tasks/'.$task->id)->with('success', 'Task Updated Successfully!');
     }
 
-    public function evaluation($solution_id)
+    public function evaluation($task_id, $solution_id)
     {   
         $solution = Solution::join('tasks', 'tasks.id', '=', 'solutions.task_id')
-        ->join('subjects', 'subjects.id', '=', 'tasks.subject_id')
+            ->join('subjects', 'subjects.id', '=', 'tasks.subject_id')
             ->select(
-                'solutions.id', 'tasks.name as task_name' ,'tasks.description', 'solutions.solution', 'tasks.points as task_points', 'subjects.name as subject_name'
+                'solutions.id', 'tasks.id as task_id','tasks.name as task_name' ,'tasks.description', 'solutions.solution', 'tasks.points as task_points', 'subjects.name as subject_name'
             )
-            ->where('solutions.id', $solution_id)->first();
+            ->where('solutions.id', $solution_id)
+            ->first();
+        
+        // Permission
+        if(Auth::user()->is_teacher != Task::find($task_id)->subject->teacher_id)
+            return redirect('/tasks/'.$task_id)->with('error', "Unauthorized access!");
 
         return view('pages.tasks.evaluate')->with('solution', $solution);
     }
 
     public function evaluate(Request $request, $id)
-    {   
+    {
         $solution = Solution::find($id);
         $task = Task::find($solution->task_id);
+
+        // Permission
+        if(Auth::user()->is_teacher != $task->subject->teacher_id)
+            return redirect('/tasks/'.$task->id)->with('error', "Unauthorized access!");
 
         // Form validation
         $this->validate($request, [
@@ -145,6 +170,11 @@ class TasksController extends Controller
     public function destroy($id)
     {
         $task = Task::find($id);
+
+        // Permission
+        if(Auth::user()->is_teacher != $task->subject->teacher_id)
+            return redirect('/tasks/'.$task->id)->with('error', "Unauthorized access!");
+        
         $task->delete();
         return redirect('/teachers/subjects/'.$task->subject_id)->with('success', 'Task Deleted Successfully!');
     }
@@ -156,7 +186,9 @@ class TasksController extends Controller
             ->select('subjects.code', 'subjects.name as subject_name', 'users.name as teacher_name','tasks.id', 'tasks.name', 'tasks.points', 'tasks.description')
             ->where('tasks.id', $id)
             ->first(); 
-            
+        
+        
+
         return view('pages.tasks.submit')->with('task', $task);
     }
     public function submit(Request $request, $id)

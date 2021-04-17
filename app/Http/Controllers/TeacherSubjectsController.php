@@ -10,6 +10,11 @@ use App\Models\Task;
 
 class TeacherSubjectsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function index()
     {
         $subjects = Subject::orderBy('name', 'asc')->where('teacher_id', Auth::user()->id)->get();
@@ -62,7 +67,13 @@ class TeacherSubjectsController extends Controller
     public function edit($id)
     {
         $subject = Subject::find($id);
-        return view('pages.subjects.edit')->with('subject', $subject);
+
+        // Permission
+        if(Auth::user()->id !== $subject->teacher_id){
+            return redirect('/teachers/subjects/'.$id)->with('error', "Unauthorized access!");
+        }
+
+        return view('pages.subjects.edit')->with('subject', $subject);  
     }
 
     public function update(Request $request, $id)
@@ -75,6 +86,11 @@ class TeacherSubjectsController extends Controller
         ],[
             'code.regex' => 'Please respect the following form IK-SSSNNN',
         ]);
+
+        // Permission
+        if(Auth::user()->id !== $subject->teacher_id){
+            return redirect('/teachers/subjects/'.$id)->with('error', "Unauthorized access!");
+        }
 
         // Update
         $subject = Subject::find($id);
@@ -90,7 +106,13 @@ class TeacherSubjectsController extends Controller
     public function destroy($id)
     {
         $subject = Subject::find($id);
-        $subject->delete(); // Delete from tables with foreign key
+        
+        // Permission
+        if(Auth::user()->id !== $subject->teacher_id){
+            return redirect('/teachers/subjects/'.$id)->with('error', "Unauthorized access!");
+        }
+
+        $subject->delete();
         return redirect('/teachers/subjects')->with('success', 'Subject Deleted Successfully!');
     }
 }

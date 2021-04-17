@@ -7,17 +7,19 @@
       <h4 class="bold">{{ $task->name }}</h4>
     </div>
     @if(Auth::user()->is_teacher)
-    <div class="action-buttons col">
-      <a href="/tasks/{{$task->id}}/edit" class="btn appbtn-primary mx-2" role="button">
-        <i class="fa fa-pencil" aria-hidden="true"></i>
-      </a>
-      {!! Form::open(['action' => ['App\Http\Controllers\TasksController@destroy', $task->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
-        {{ Form::hidden('_method', 'DELETE') }}
-        <button class="btn appbtn-danger" type="submit">
-          <i class="fa fa-trash" aria-hidden="true"></i>
-        </button>
-      {!! Form::close() !!}
-    </div>
+      @if(Auth::user()->id == $task->subject->teacher_id)
+      <div class="action-buttons col">
+        <a href="/tasks/{{$task->id}}/edit" class="btn appbtn-primary mx-2" role="button">
+          <i class="fa fa-pencil" aria-hidden="true"></i>
+        </a>
+        {!! Form::open(['action' => ['App\Http\Controllers\TasksController@destroy', $task->id], 'method' => 'POST', 'class' => 'pull-right']) !!}
+          {{ Form::hidden('_method', 'DELETE') }}
+          <button class="btn appbtn-danger" type="submit">
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        {!! Form::close() !!}
+      </div>
+      @endif
     @else 
     <div class="action-buttons bold col">
       <a href="/students/subjects/{{$task->subject_id}}">Show subject</a>
@@ -57,8 +59,8 @@
             <td>{{ $solution->created_at->format('d-m-Y') }}</td>
             <td>{{ $solution->email }}</td>
             <td>
-              @if (Auth::user()->is_teacher && !strtotime($solution->evaluatedOn) > 0)
-              <a href="/tasks/{{ $solution->id }}/evaluate" class="appbadge appbadge-secondary" role="button">
+              @if (Auth::user()->is_teacher && Auth::user()->id == $task->subject->teacher_id && !strtotime($solution->evaluatedOn) > 0)
+              <a href="/tasks/{{$task->id}}/evaluate/{{$solution->id}}" class="appbadge appbadge-secondary" role="button">
                 Evaluate
               </a>
               @else

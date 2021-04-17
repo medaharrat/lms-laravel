@@ -15,6 +15,7 @@
     <body class="antialiased">
         @include('inc.u-navbar')
         <div class="container py-4">
+            @include('inc.alerts')
             @yield('content')
         </div>
         

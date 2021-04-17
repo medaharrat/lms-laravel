@@ -36,7 +36,6 @@
     <div class="col">
       <li><p><b>Date of creation:</b> {{ $subject->created_at->format('d-m-Y') }}</p></li>
       <li><p><b>Date of last modification:</b> {{ $subject->updated_at->format('d-m-Y') }}</p></li>
-      <!-- Show the time -->
       <li><p><b>Number of students enrolled:</b> {{ count($students) }}</p></li>  
     </div>
     <div class="col">
@@ -121,17 +120,16 @@
               <td>{{ $task->points }}</td>
               @if(!Auth::user()->is_teacher)
               <td>
-                <!-- FIX this -->
-                    @if(count($task->solutions) > 0)
-                    <p>
-                      You already submitted this task. 
-                      <a href="/tasks/{{ $task->id }}/submit" class="bold">Submit again</a>
-                    </p>
-                    @else
-                    <a href="/tasks/{{ $task->id }}/submit" class="btn appbtn-primary" role="button">
-                      Submit solution
-                    </a>
-                    @endif
+                @if(count($task->solutions) > 0)
+                <p> 
+                  You already submitted this task. 
+                  <a href="/tasks/{{ $task->id }}/submit" class="bold">Submit again</a>
+                </p>
+                @else
+                <a href="/tasks/{{ $task->id }}/submit" class="btn appbtn-primary" role="button">
+                  Submit solution
+                </a>
+                @endif
               </td>
               @endif
             </tr>

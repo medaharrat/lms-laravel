@@ -20,6 +20,7 @@ class CreateTasksTable extends Migration
             $table->integer('points')->nullable();
             $table->integer('subject_id')->references('id')->on('subjects');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -10,33 +10,17 @@ use App\Models\Task;
 
 class TeacherSubjectsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $subjects = Subject::orderBy('name', 'asc')->where('teacher_id', Auth::user()->id)->get();
         return view('pages.teacher.index')->with('subjects', $subjects);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('pages.subjects.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // Form Validation
@@ -44,8 +28,7 @@ class TeacherSubjectsController extends Controller
             'name'    => 'required|min:3',
             'code'    => 'required|min:9|max:9|regex:(^IK-(([A-Z]+)\d{3}(\d+)?$))',
             'credits' => 'required|numeric',
-        ],
-        [
+        ],[
             'code.regex' => 'Please respect the following form IK-SSSNNN',
         ]);
 
@@ -61,12 +44,6 @@ class TeacherSubjectsController extends Controller
         return redirect('/teachers/subjects')->with('success', 'Subject Created Successfully!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $subject = Subject::find($id);
@@ -82,25 +59,12 @@ class TeacherSubjectsController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $subject = Subject::find($id);
         return view('pages.subjects.edit')->with('subject', $subject);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // Form Validation
@@ -121,12 +85,6 @@ class TeacherSubjectsController extends Controller
         return redirect('/teachers/subjects/'.$subject->id)->with('success', 'Subject Updated Successfully!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $subject = Subject::find($id);

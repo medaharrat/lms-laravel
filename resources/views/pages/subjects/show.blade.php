@@ -58,7 +58,7 @@
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" data-bs-toggle="tab" type="button" data-bs-target="#tasks"  role="tab" aria-selected="false">
-        Tasks (whether it was already submitted or not.)
+        Tasks
       </button>
     </li>
   </ul>
@@ -122,15 +122,16 @@
               @if(!Auth::user()->is_teacher)
               <td>
                 <!-- FIX this -->
-                @foreach ($solutions as $solution)
-                    @if($solution->task_id == $task->id)
-                    <p>- Last submitted on {{$solution->created_at}}</p>
+                    @if(count($task->solutions) > 0)
+                    <p>
+                      You already submitted this task. 
+                      <a href="/tasks/{{ $task->id }}/submit" class="bold">Submit again</a>
+                    </p>
                     @else
                     <a href="/tasks/{{ $task->id }}/submit" class="btn appbtn-primary" role="button">
                       Submit solution
                     </a>
                     @endif
-                @endforeach
               </td>
               @endif
             </tr>

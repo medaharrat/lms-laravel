@@ -5,11 +5,10 @@
     
     {!! Form::open(['action' =>'App\Http\Controllers\TeacherSubjectsController@store', 'method' => 'POST', 'class' => 'm-4']) !!}
         @csrf
-        {{ Form::hidden('teacher_id', Auth::user()->id, ['class' => 'form-control']) }}
         <div class="row">
             <div class="col col-lg-2">
                 {{ Form::label('code', 'Subject Code') }}
-                {{ Form::text('code', 'IK-XXXXXX', ['class' => 'form-control']) }}
+                {{ Form::text('code', '',['class' => 'form-control', 'placeholder' => 'IK-SUB001']) }}
                 {!!$errors->first("code", "<span class='text-danger'>:message</span>")!!}
             </div>
             <div class="col col-lg-10">

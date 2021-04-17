@@ -66,16 +66,32 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = Task::find($id);
-        $solutionsOfStudents = Solution::join('users', 'solutions.student_id', '=', 'users.id')
-            ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
-            ->orderBy('solutions.created_at')
-            ->where('solutions.task_id', $id)->get();
 
-        $evaluatedSolutions = Solution::join('users', 'solutions.student_id', '=', 'users.id')
-            ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
-            ->orderBy('solutions.created_at')
-            ->where([['task_id', '=', $id], ['evaluatedOn', '<>', '', 'and']])
-            ->get();
+        $solutionsOfStudents = Auth::user()->is_teacher ? 
+            Solution::join('users', 'solutions.student_id', '=', 'users.id')
+                ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+                ->orderBy('solutions.created_at')
+                ->where('solutions.task_id', $id)
+                ->get()
+            :
+            Solution::join('users', 'solutions.student_id', '=', 'users.id')
+                ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+                ->orderBy('solutions.created_at')
+                ->where(['solutions.task_id' => $id, 'users.id' => Auth::user()->id])
+                ->get();
+
+        $evaluatedSolutions = Auth::user()->is_teacher ? 
+            Solution::join('users', 'solutions.student_id', '=', 'users.id')
+                ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+                ->orderBy('solutions.created_at')
+                ->where([['task_id', '=', $id], ['evaluatedOn', '<>', '', 'and']])
+                ->get()
+            :
+            Solution::join('users', 'solutions.student_id', '=', 'users.id')
+                ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
+                ->orderBy('solutions.created_at')
+                ->where([['task_id', '=', $id], ['evaluatedOn', '<>', '', 'and'], ['users.id', Auth::user()->include_once]])
+                ->get();
 
         return view('pages.tasks.show', [
             'task' => $task, 

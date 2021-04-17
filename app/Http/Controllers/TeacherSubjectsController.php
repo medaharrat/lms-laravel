@@ -42,8 +42,11 @@ class TeacherSubjectsController extends Controller
         // Form Validation
         $this->validate($request, [
             'name'    => 'required|min:3',
-            'code'    => 'required|min:9|max:9',
+            'code'    => 'required|min:9|max:9|regex:(^IK-(([A-Z]+)\d{3}(\d+)?$))',
             'credits' => 'required|numeric',
+        ],
+        [
+            'code.regex' => 'Please respect the following form IK-SSSNNN',
         ]);
 
         // Add subject
@@ -52,7 +55,7 @@ class TeacherSubjectsController extends Controller
         $subject->name = $request->input('name');
         $subject->description = $request->input('description');
         $subject->credits = $request->input('credits');
-        $subject->teacher_id = $request->input('teacher_id');
+        $subject->teacher_id = Auth::user()->id;
         $subject->save();
 
         return redirect('/teachers/subjects')->with('success', 'Subject Created Successfully!');

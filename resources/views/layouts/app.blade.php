@@ -14,7 +14,6 @@
         @include('inc.g-navbar')
         <div class="main appbg-light">
             <div class="container py-4">
-                @include('inc.alerts')
                 @yield('content')
             </div>
         </div>

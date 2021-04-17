@@ -17,7 +17,7 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->string('name');
             $table->mediumText('description');
-            $table->integer('points');
+            $table->integer('points')->nullable();
             $table->integer('subject_id')->references('id')->on('subjects');
             $table->timestamps();
         });

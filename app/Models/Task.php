@@ -25,7 +25,7 @@ class Task extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function solution() {
+    public function solutions() {
         return $this->hasMany(Solution::class);
     }
 }

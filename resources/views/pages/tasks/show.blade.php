@@ -18,6 +18,10 @@
         </button>
       {!! Form::close() !!}
     </div>
+    @else 
+    <div class="action-buttons bold col">
+      <a href="/students/subjects/{{$task->subject_id}}">Show subject</a>
+    </div>
     @endif
   </div>
   <div class="description">
@@ -44,9 +48,6 @@
             <th scope="col">Date of submission</th>
             <th scope="col">Student email</th>
             <th scope="col">Grade</th>
-            @if (!Auth::user()->is_teacher)
-            <th scope="col">Submissions</th>
-            @endif
           </tr>
         </thead>
         <tbody>
@@ -75,14 +76,6 @@
               </div>
               @endif
             </td>
-            @if (!Auth::user()->is_teacher)
-            <td>
-              <ol>
-                <li><a href="#">View Submission 1</a></li>
-                <li><a href="#">View Submission 2</a></li>
-              </ol>
-            </td>
-            @endif
           </tr>   
           @endforeach
         </tbody>

@@ -66,9 +66,10 @@ class StudentSubjectsController extends Controller
             ->select('*')
             ->where('tasks.subject_id', '=', $id)
             ->where('solutions.student_id', Auth::user()->id)
-            ->orderBy('name', 'asc')
+            ->groupBy('tasks.id')
             ->get();
-        echo $solutions;
+
+        
         return view('pages.subjects.show', [
             'subject' => $subject, 'students' => $students, 'tasks' => $tasks, 'solutions' => $solutions
         ]);

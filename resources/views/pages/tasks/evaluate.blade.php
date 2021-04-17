@@ -1,6 +1,14 @@
 @extends('layouts.user')
 
 @section('content')
+<div>
+    <h4 class="bold">{{ $solution->task_name }}</h4>
+    <hr>
+    <div class="col-lg-12 row">
+        <div class="col"><span class="bold">Subject:</span> {{ $solution->subject_name }}</div>
+        <div class="col"><span class="bold">Points:</span> {{ $solution->task_points }}</div>
+    </div>
+    <hr>
     <div class="row">
         <div class="col col-lg-9">
             <h5 class="bold">Task description</h6>
@@ -8,12 +16,8 @@
                 <p>{{ $solution->description }}</p></li>
             </div>
             <h5 class="bold">Solution</h6>
-            <div class="source-code">
-                <pre>
-                <code>
+            <div class="editor">
                 {{ $solution->solution }}
-                </code>
-                </pre>
             </div>
         </div>
         <div class="col col-lg-3">
@@ -27,7 +31,7 @@
                         {!!$errors->first("evaluation", "<span class='text-danger'>:message</span>")!!}
                     </div>
                     <div class="col col-lg-2">
-                        <span>/{{ $solution->taskPoints }}</span>
+                        <span>/{{ $solution->task_points }}</span>
                     </div>
                 </div>
             </div>     
@@ -39,4 +43,5 @@
         {!! Form::close() !!}
         </div>
     </div>
+</div>
 @endsection

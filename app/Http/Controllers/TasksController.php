@@ -100,8 +100,9 @@ class TasksController extends Controller
     public function evaluation($solution_id)
     {   
         $solution = Solution::join('tasks', 'tasks.id', '=', 'solutions.task_id')
+        ->join('subjects', 'subjects.id', '=', 'tasks.subject_id')
             ->select(
-                'solutions.id', 'tasks.description', 'solutions.solution', 'tasks.points as taskPoints'
+                'solutions.id', 'tasks.name as task_name' ,'tasks.description', 'solutions.solution', 'tasks.points as task_points', 'subjects.name as subject_name'
             )
             ->where('solutions.id', $solution_id)->first();
 

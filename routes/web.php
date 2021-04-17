@@ -46,9 +46,8 @@ Route::post('/tasks/{id}', [TasksController::class, 'submit']);
 Route::get('/students/subjects/', [StudentSubjectsController::class, 'index']);
 Route::get('/students/subjects/new', [StudentSubjectsController::class, 'take']);
 Route::get('/students/subjects/{subject_id}', [StudentSubjectsController::class, 'show']);
-Route::delete('/students/subjects/{subject_id}', [StudentSubjectsController::class, 'drop']);
-
 Route::post('/students/subjects', [StudentSubjectsController::class, 'store']);
+Route::delete('/students/subjects/{subject_id}', [StudentSubjectsController::class, 'drop']);
 
 /* 
 Route::group(['middleware' => ['auth']], function() {

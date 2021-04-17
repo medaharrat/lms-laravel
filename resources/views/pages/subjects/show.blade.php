@@ -90,19 +90,20 @@
     <div class="tab-pane fade" id="tasks" role="tabpanel">
       <div class="row">
         <div class="col">
-          <h6 class="p-2 mt-3">Tasks of the subject:</h6>
+          <h6 class="p-2 mt-3">{{count($tasks) > 0 ? 'Tasks of the subject:' : 'There are no tasks for this subject.'}}</h6>
         </div>
         <div class="action-buttons col">
           @if(Auth::user()->is_teacher)
           {!! Form::open(['action' =>'App\Http\Controllers\TasksController@create', 'method' => 'GET']) !!}
           <button class="btn appbtn-primary" type="submit">
             {{ Form::hidden('subject_id', $subject->id) }}
-            New Task
+            Create New Task
           </button>
           {!! Form::close() !!}
           @endif
         </div>
       </div>
+      @if(count($tasks) > 0)
       <table class="table">
           <thead>
             <tr>
@@ -135,7 +136,8 @@
             </tr>
             @endforeach
           </tbody>
-      </table> 
+      </table>
+      @endif 
     </div>
   </div>
 </div>

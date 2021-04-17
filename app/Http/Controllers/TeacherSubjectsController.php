@@ -70,8 +70,10 @@ class TeacherSubjectsController extends Controller
         // Form Validation
         $this->validate($request, [
             'name'    => 'required|min:3',
-            'code'    => 'required|min:9|max:9',
+            'code'    => 'required|min:9|max:9|regex:(^IK-(([A-Z]+)\d{3}(\d+)?$))',
             'credits' => 'required|numeric',
+        ],[
+            'code.regex' => 'Please respect the following form IK-SSSNNN',
         ]);
 
         // Update

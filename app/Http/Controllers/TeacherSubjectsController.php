@@ -87,14 +87,14 @@ class TeacherSubjectsController extends Controller
             'code.regex' => 'Please respect the following form IK-SSSNNN',
         ]);
 
-        // Update
+        // Get the subject
         $subject = Subject::find($id);
 
         // Permission
         if(Auth::user()->id != $subject->teacher_id){
             return redirect('/teachers/subjects/'.$id)->with('error', "Unauthorized access!");
         }
-
+        // Update
         $subject->code = $request->code;
         $subject->name = $request->name;
         $subject->description = $request->description;

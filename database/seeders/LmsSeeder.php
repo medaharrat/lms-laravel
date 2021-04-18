@@ -76,11 +76,11 @@ class LmsSeeder extends Seeder
         }
 
         // Solutions 
-        for($i = 1; $i <= 3; $i++){
+        for($i = 4; $i <= 6; $i++){
             Solution::create([
                 'student_id' => $i,
                 'task_id' => '1',
-                'solution' => 'This is a solution '.$i
+                'solution' => 'This is a solution '
             ]);
         }
     }

@@ -83,9 +83,7 @@ class StudentSubjectsController extends Controller
     public function drop($id)
     {
         $subject = Subject::find($id);
-        
         $subject->students()->detach(Auth::user()->id);
-
         return redirect('/students/subjects')->with('success', 'Subject Dropped Successfully!');
     }
 }

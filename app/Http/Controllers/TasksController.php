@@ -83,7 +83,7 @@ class TasksController extends Controller
         $task = Task::find($id);
 
         // Permission
-        if(Auth::user()->id !== $task->subject()->teacher()->id){
+        if(Auth::user()->id !== $task->subject->teacher->id){
             return redirect('/tasks/'.$id)->with('error', "Unauthorized access!");
         }
 

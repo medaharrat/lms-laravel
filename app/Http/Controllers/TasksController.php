@@ -68,7 +68,7 @@ class TasksController extends Controller
             Solution::join('users', 'solutions.student_id', '=', 'users.id')
                 ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
                 ->orderBy('solutions.created_at')
-                ->where([['task_id', '=', $id], ['evaluatedOn', '<>', '', 'and'], ['users.id', Auth::user()->include_once]])
+                ->where([['task_id', '=', $id], ['evaluatedOn', '<>', '', 'and'], ['users.id', Auth::user()->id]])
                 ->get();
 
         return view('pages.tasks.show', [
@@ -186,8 +186,6 @@ class TasksController extends Controller
             ->select('subjects.code', 'subjects.name as subject_name', 'users.name as teacher_name','tasks.id', 'tasks.name', 'tasks.points', 'tasks.description')
             ->where('tasks.id', $id)
             ->first(); 
-        
-        
 
         return view('pages.tasks.submit')->with('task', $task);
     }
@@ -210,12 +208,13 @@ class TasksController extends Controller
         $solutionsOfStudents = Solution::join('users', 'solutions.student_id', '=', 'users.id')
             ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
             ->orderBy('solutions.created_at')
-            ->where('solutions.task_id', $task->id)->get();
+            ->where(['solutions.task_id' => $id, 'users.id' => Auth::user()->id])
+            ->get();
 
         $evaluatedSolutions = Solution::join('users', 'solutions.student_id', '=', 'users.id')
             ->select('solutions.id as id', 'users.name', 'users.email', 'solutions.created_at', 'solutions.evaluatedOn', 'solutions.points')
             ->orderBy('solutions.created_at')
-            ->where([['task_id', '=', $task->id], ['evaluatedOn', '<>', '', 'and']])
+            ->where([['task_id', '=', $id], ['evaluatedOn', '<>', '', 'and'], ['users.id', Auth::user()->id]])
             ->get();
 
         return view('pages.tasks.show', [

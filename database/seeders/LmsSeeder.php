@@ -24,8 +24,8 @@ class LmsSeeder extends Seeder
         // Users
         for($i = 1; $i <= 3; $i++){
             User::create([
-                'name' => Str::random(10),
-                'email' => Str::random(10).'@gmail.com' ,
+                'name' => 'Teacher'.$i,
+                'email' => 'Teacher'.$i.'@gmail.com' ,
                 'password' => Hash::make('123456789'),
                 'is_teacher' => '1'
             ]);
@@ -33,8 +33,8 @@ class LmsSeeder extends Seeder
 
         for($i = 1; $i <= 3; $i++){
             User::create([
-                'name' => Str::random(10),
-                'email' => Str::random(10).'@gmail.com' ,
+                'name' => 'Student'.$i,
+                'email' => 'Student'.$i.'@gmail.com' ,
                 'password' => Hash::make('123456789'),
                 'is_teacher' => '0'
             ]);
